@@ -41,3 +41,5 @@ kpackagetool6 --remove /tmp/scoreBoard --type Plasma/Applet
     * Check settings to download/apply update
     * Logout after update for update to be applied
     * Verify settings/config after login
+
+All trademarks, trade names, or logos mentioned or used are the property of their respective owners. Every effort has been made to properly capitalize, punctuate, identify and attribute trademarks and trade names to their respective owners.
