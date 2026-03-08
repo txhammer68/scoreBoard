@@ -1,0 +1,58 @@
+{
+  "scoresURL": "https://site.api.espn.com/apis/site/v2/sports/basketball/wnba/scoreboard",
+  "teamsURL": "https://site.api.espn.com/apis/site/v2/sports/basketball/wnba/teams",
+  "teams": [
+    {
+      "id": "20",
+      "name": "Atlanta Dream"
+    },
+    {
+      "id": "19",
+      "name": "Chicago Sky"
+    },
+    {
+      "id": "18",
+      "name": "Connecticut Sun"
+    },
+    {
+      "id": "3",
+      "name": "Dallas Wings"
+    },
+    {
+      "id": "129689",
+      "name": "Golden State Valkyries"
+    },
+    {
+      "id": "5",
+      "name": "Indiana Fever"
+    },
+    {
+      "id": "17",
+      "name": "Las Vegas Aces"
+    },
+    {
+      "id": "6",
+      "name": "Los Angeles Sparks"
+    },
+    {
+      "id": "8",
+      "name": "Minnesota Lynx"
+    },
+    {
+      "id": "9",
+      "name": "New York Liberty"
+    },
+    {
+      "id": "11",
+      "name": "Phoenix Mercury"
+    },
+    {
+      "id": "14",
+      "name": "Seattle Storm"
+    },
+    {
+      "id": "16",
+      "name": "Washington Mystics"
+    }
+  ]
+}

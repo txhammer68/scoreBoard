@@ -1,0 +1,97 @@
+Deprecated PlasmCore: In Plasma 6, org.kde.plasma.core is deprecated. You should use org.kde.plasma.workspace.components or standard QtQuick.Controls Actions. For the context menu specifically, the Plasma 6 way is defining a Plasmoid.contextualActions: [ ... ] using standard Action types.
+
+Plasmoid.contextualActions: [
+    Controls.Action {
+        text: i18n("Refresh Data")
+        icon.name: "view-refresh"
+        onTriggered: getData(gameTypeURL)
+    },
+    // Example: Add a shortcut to the settings
+    Controls.Action {
+        text: i18n("Configure...")
+        icon.name: "configure"
+        onTriggered: plasmoid.action("configure").trigger()
+    }
+]
+
+
+function getData(url) {
+    let xhr = new XMLHttpRequest();
+    xhr.open("GET", url, true);
+
+    // Set a timeout (10 seconds) so the widget doesn't hang on a dead connection
+    xhr.timeout = 10000;
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                try {
+                    let data = JSON.parse(xhr.responseText);
+
+                    if (url === gameTypeURL) {
+                        scoreBoard = data;
+                        isConfigured = true;
+                        Plasmoid.configurationRequired = false;
+                        checkActiveGames();
+                    } else if (url === updateURL) {
+                        processUpdateData(data);
+                    }
+                } catch (e) {
+                    console.error("Failed to parse JSON from:", url, e);
+                }
+            } else {
+                // Handle API Down or Network Error (404, 500, etc.)
+                console.warn("API Error:", xhr.status, "URL:", url);
+                if (url === gameTypeURL) {
+                    // Don't wipe current scores immediately on one failure,
+                    // but mark that we have a connection issue if you choose.
+                    activeGames = false;
+                }
+            }
+        }
+    };
+
+    xhr.ontimeout = function () {
+        console.error("Request timed out for:", url);
+    };
+
+    xhr.onerror = function () {
+        console.error("Network error occurred while fetching:", url);
+    };
+
+    xhr.send();
+}
+
+
+function processUpdateData(data) {
+    // Ensure we are looking at the right JSON path (KPlugin is standard in metadata.json)
+    let remoteVersion = parseFloat(data.KPlugin.Version);
+    if (!isNaN(remoteVersion) && remoteVersion > currentVersion) {
+        updateNotification.sendEvent();
+    }
+}
+
+
+property bool isOffline: false
+
+2. Update the getData Function
+Modify your getData logic to toggle this property:
+
+    Set isOffline = false inside the if (xhr.status === 200) block.
+    Set isOffline = true in the else block (API errors) and inside xhr.onerror or xhr.ontimeout.
+
+Kirigami.InlineMessage {
+    id: offlineIndicator
+    Layout.fillWidth: true
+    visible: root.isOffline
+    type: Kirigami.MessageType.Error
+    text: "Offline: Showing last cached scores."
+
+    actions: [
+        Kirigami.Action {
+            icon.name: "view-refresh"
+            text: "Retry"
+            onTriggered: getData(gameTypeURL)
+        }
+    ]
+}

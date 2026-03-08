@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kcfg xmlns="http://www.kde.org/standards/kcfg/1.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
+      http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
+  <kcfgfile name=""/>
+  <group name="Scoreboard">
+    <entry name="gameType" type="string">
+      <attribute name="gameType" type="string"/>
+      <label>Select Sport</label>
+    </entry>
+    <entry name="gameTypeURL" type="string">
+      <attribute name="gameTypeURL" type="string"/>
+    </entry>
+    <entry name="gameIdx" type="int">
+      <attribute name="gameIdx" type="int"/>
+      <default>-1</default>
+    </entry>
+    <entry name="viewMode" type="Bool">
+       <attribute name="viewMode" type="Bool"/>
+      <default>true</default>
+    </entry>
+    <entry name="chkBoxCompact" type="Bool">
+       <attribute name="chkBoxCompact" type="Bool"/>
+      <default>true</default>
+    </entry>
+    <entry name="chkBoxFull" type="Bool">
+       <attribute name="chkBoxFull" type="Bool"/>
+      <default>false</default>
+    </entry>
+  </group>
+</kcfg>

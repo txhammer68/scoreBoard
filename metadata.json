@@ -1,0 +1,25 @@
+{
+    "KPackageStructure": "Plasma/Applet",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Name": "TxHammer68"
+            }
+        ],
+        "BugReportUrl": "https://github.com/txhammer68/scoreBoard/issues",
+        "Category": "Online Services",
+        "Description": "Plasma Widget Showing Sports Scores",
+        "FormFactors": [
+            "desktop"
+        ],
+        "Icon": "atlantikdesigner",
+        "Id": "scoreBoard",
+        "License": "GPL-3.0",
+        "Name": "Score Board",
+        "Version": "2.4",
+        "Website": "https://github.com/txhammer68/scoreBoard"
+    },
+    "X-Plasma-NotificationArea": "true",
+    "X-KDE-ParentApp": "org.kde.plasmashell",
+    "X-Plasma-API-Minimum-Version": "6.0"
+}
