@@ -16,7 +16,7 @@
         "Id": "scoreBoard",
         "License": "GPL-3.0",
         "Name": "Score Board",
-        "Version": "2.4",
+        "Version": "2.44",
         "Website": "https://github.com/txhammer68/scoreBoard"
     },
     "X-Plasma-NotificationArea": "true",
