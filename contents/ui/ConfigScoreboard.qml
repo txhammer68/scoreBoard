@@ -9,8 +9,6 @@ Item {
     id: configScoreBoard
     property string title:"Scoreboard Settings"
     property alias cfg_gameIdx:sportSel.currentIndex
-    property string cfg_gameType
-    property string cfg_gameTypeURL
     property alias cfg_viewMode:chkBoxCompact.checked
     property alias cfg_chkBoxCompact:chkBoxCompact.checked
     property alias cfg_chkBoxFull:chkBoxFull.checked
@@ -21,13 +19,6 @@ Item {
     property double updateVersion:0.0
     property bool updateAvail:false
     property string updateMsg:"Updated Version Ready "+"("+updateVersion+")"
-
-    property string mlbTeams:"./data/mlbTeams.json"
-    property string nflTeams:"./data/nflTeams.json"
-    property string nbaTeams:"./data/nbaTeams.json"
-    property string wnbaTeams:"./data/wnbaTeams.json"
-    property string nhlTeams:"./data/nhlTeams.json"
-    property string mlsTeams:"./data/mlsTeams.json"
 
    Component.onCompleted:{
         getData(updateURL)
@@ -77,11 +68,7 @@ Item {
                 height:32
                 currentIndex:-1
                 displayText: currentIndex < 0 ? "Select Sport" : model[currentIndex]
-                model: ["MLB","NFL","NBA","NHL","MLS","WNBA"]
-                onCurrentIndexChanged:{
-                    cfg_gameType=model[currentIndex]
-                    getSportData(currentIndex)
-                }
+                model: ["MLB","MLS","NBA","NFL","NHL","WNBA","World Cup"]
            }
         }
 
@@ -145,27 +132,6 @@ Item {
         }
     }
 
-    function getSportData(x) {
-        if (x == 0) {
-            getData(mlbTeams)
-        }
-        else if (x == 1) {
-            getData(nflTeams)
-        }
-        else if (x == 2) {
-            getData(nbaTeams)
-        }
-        else if (x == 3) {
-            getData(nhlTeams)
-        }
-        else if (x == 4) {
-            getData(mlsTeams)
-        }
-        else if (x == 5) {
-            getData(wnbaTeams)
-        }
-     }
-
     function getData(url) {
         let xhr = new XMLHttpRequest()
         xhr.open("GET", url,true)
@@ -175,15 +141,9 @@ Item {
                     if (url == updateURL) {
                          processUpdateData(data)
                     }
-                    else processTeamData(data)
                 }
             }
         xhr.send()
-    }
-
-    function processTeamData(data) {
-        cfg_gameTypeURL=data.scoresURL
-        return null
     }
 
     function processUpdateData (data) {
