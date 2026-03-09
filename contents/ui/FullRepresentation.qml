@@ -137,7 +137,7 @@ Item {
                     Text {
                         id:ats
                         text:scoreBoard.events[index].competitions[0].competitors[0].score
-                        color:winningTeam(scoreBoard.events[index].competitions[0].competitors[1].hasOwnProperty("winner") ? scoreBoard.events[index].competitions[0].competitors[0].winner:false,index)
+                        color:scoreBoard.events[index].competitions[0].competitors[0].hasOwnProperty("winner") ? winningTeam(scoreBoard.events[index].competitions[0].competitors[0].winner,index):Kirigami.Theme.textColor
                         font.pointSize:14
                         font.bold:false
                         horizontalAlignment:Qt.AlignLeft
@@ -177,7 +177,7 @@ Item {
                     Text {
                         id:hts
                         text: scoreBoard.events[index].competitions[0].competitors[1].score
-                        color:winningTeam(scoreBoard.events[index].competitions[0].competitors[1].hasOwnProperty("winner") ? scoreBoard.events[index].competitions[0].competitors[1].winner:false,index)
+                        color:scoreBoard.events[index].competitions[0].competitors[1].hasOwnProperty("winner") ? winningTeam(scoreBoard.events[index].competitions[0].competitors[0].winner,index):Kirigami.Theme.textColor
                         font.pointSize:14
                         font.bold:false
                         horizontalAlignment:Qt.AlignLeft
