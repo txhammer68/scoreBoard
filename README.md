@@ -19,7 +19,7 @@ git clone https://github.com/TxHammer68/scoreBoard /tmp/scoreBoard && kpackageto
 ```
 * Remove with
 ``` bash
-kpackagetool6 --remove /tmp/scoreBoard --type Plasma/Applet
+kpackagetool6 --remove scoreBoard --type Plasma/Applet
 ```
 * Install widget to panel or desktop floating
 * Right click on widget to configure
