@@ -1,16 +1,17 @@
 import QtQuick
 import QtQuick.Layouts
 import org.kde.plasma.plasmoid
-import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.core as PlasmCore
 import QtNetwork
 import org.kde.plasma.configuration
 import org.kde.kirigami as Kirigami
 import org.kde.plasma.plasma5support as Plasma5Support
 import org.kde.notification
+import "./data/scoresAPI.js" as ScoresAPI
 
 // Scoreboard Widget
-// USA sports MLB,NBA,NFL,MLS,NHL,WNBA
-// txhammer 02/2026
+// USA sports MLB,NBA,NFL,MLS,NHL,WNBA,World Cup
+// txhammer 03/2026
 
 PlasmoidItem {
     id: root
@@ -19,8 +20,8 @@ PlasmoidItem {
 
     // --- Configuration Properties ---
     property bool isConfigured: false
-    property string gameType: plasmoid.configuration.gameType
-    property string gameTypeURL: plasmoid.configuration.gameTypeURL
+    property string gameTypeIdx: plasmoid.configuration.gameIdx
+    property string gameTypeURL:ScoresAPI.urls[gameTypeIdx]
     property bool viewMode:plasmoid.configuration.viewMode
     property var scoreBoard:{}
     property bool activeGames:false
@@ -49,13 +50,14 @@ PlasmoidItem {
     }
 
     Plasmoid.contextualActions: [
-        PlasmaCore.Action {
+        PlasmCore.Action {
             text: "Refresh Data"
             icon.name: "view-refresh"
             priority: Plasmoid.HighPriorityAction
             onTriggered: getData(gameTypeURL)
         }
     ]
+
 
     Item {
         Notification {
@@ -69,7 +71,6 @@ PlasmoidItem {
             urgency: Notification.DefaultUrgency
         }
     }
-
 
     function getData(url) {
         let xhr = new XMLHttpRequest();
@@ -148,11 +149,13 @@ PlasmoidItem {
         }
     }
 
-    function winningTeam(isWinner, index) {
-        if (scoreBoard.events[index].status.type.state === "post") {
-            return isWinner ? Kirigami.Theme.textColor : Kirigami.Theme.disabledTextColor;
+    function winningTeam (x,index){
+        let c=Kirigami.Theme.textColor
+        if (scoreBoard.events[index].status.type.state == "post") {
+            x ? c=Kirigami.Theme.textColor:c=Kirigami.Theme.disabledTextColor
         }
-        return Kirigami.Theme.textColor;
+        else c=Kirigami.Theme.textColor
+            return c
     }
 
     function getOrdinal(n) {            // assigns superfix to inning
