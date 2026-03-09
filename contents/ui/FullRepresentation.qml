@@ -177,7 +177,7 @@ Item {
                     Text {
                         id:hts
                         text: scoreBoard.events[index].competitions[0].competitors[1].score
-                        color:scoreBoard.events[index].competitions[0].competitors[1].hasOwnProperty("winner") ? winningTeam(scoreBoard.events[index].competitions[0].competitors[0].winner,index):Kirigami.Theme.textColor
+                        color:scoreBoard.events[index].competitions[0].competitors[1].hasOwnProperty("winner") ? winningTeam(scoreBoard.events[index].competitions[0].competitors[1].winner,index):Kirigami.Theme.textColor
                         font.pointSize:14
                         font.bold:false
                         horizontalAlignment:Qt.AlignLeft
