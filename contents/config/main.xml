@@ -23,7 +23,7 @@
     </entry>
     <entry name="chkBoxUpdate" type="Bool">
       <attribute name="chkBoxUpdate" type="Bool"/>
-      <default>false</default>
+      <default>true</default>
     </entry>
   </group>
 </kcfg>
