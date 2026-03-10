@@ -12,6 +12,7 @@ Item {
     property alias cfg_viewMode:chkBoxCompact.checked
     property alias cfg_chkBoxCompact:chkBoxCompact.checked
     property alias cfg_chkBoxFull:chkBoxFull.checked
+    property alias cfg_chkBoxUpdate:chkBoxUpdate.checked
 
     property string updateURL:"https://raw.githubusercontent.com/txhammer68/scoreBoard/refs/heads/main/metadata.json"
     property string updateCMD:"git clone https://github.com/TxHammer68/scoreBoard /tmp/scoreBoard/ && kpackagetool6 -t Plasma/Applet -u /tmp/scoreBoard/"
@@ -21,20 +22,21 @@ Item {
     property string updateMsg:"Updated Version Ready "+"("+updateVersion+")"
 
    Component.onCompleted:{
-        getData(updateURL)
         sportSel.currentIndex=cfg_gameIdx
         chkBoxCompact.checkState=cfg_chkBoxCompact
         chkBoxFull.checkState=cfg_chkBoxFull
+        chkBoxUpdate.checked=cfg_chkBoxUpdate
         if (sportSel.currentIndex != -1) {
             getSportData(sportSel.currentIndex)
         }
+        chkBoxUpdate.checked ? getData(updateURL):""
     }
 
     Text {
         id:appVer
         anchors.top:configScoreBoard.top
         anchors.right:configScoreBoard.right
-        anchors.margins:10
+        anchors.margins:5
         text:Plasmoid.metaData.version
         color:Kirigami.Theme.disabledTextColor
         font.pointSize:11
@@ -59,6 +61,7 @@ Item {
             Text {
                 text:"Select Sport"
                 color:Kirigami.Theme.textColor
+                font.pointSize:14
                 topPadding:7
                 width:172
             }
@@ -72,7 +75,6 @@ Item {
            }
         }
 
-        QQC2.ButtonGroup { id: viewSel;exclusive: true }
 
         Text {
             text:"Select Scoreboard View"
@@ -81,26 +83,28 @@ Item {
         }
         Row {
             spacing:15
-            QQC2.CheckBox {
+            QQC2.RadioButton {
                 id: chkBoxCompact
                 checked: true
-                tristate : false
-                QQC2.ButtonGroup.group: viewSel
                 text: qsTr("Compact View")
             }
 
-            QQC2.CheckBox {
+            QQC2.RadioButton {
                 id: chkBoxFull
                 checked: false
-                tristate : false
-                QQC2.ButtonGroup.group: viewSel
                 text: qsTr("Full View")
             }
         }
 
+        QQC2.CheckBox{
+            id: chkBoxUpdate
+            checked: true
+            text: qsTr("Check for Updates")
+        }
+
         Row {
             spacing:10
-            visible:updateAvail
+            visible:(updateAvail && chkBoxUpdate.checked)
             Rectangle {
                 id:updateWidget
                 width:120
@@ -139,7 +143,7 @@ Item {
             if (xhr.readyState === 4 && xhr.status === 200) {
                     let data = JSON.parse(xhr.responseText)
                     if (url == updateURL) {
-                         processUpdateData(data)
+                       processUpdateData(data)
                     }
                 }
             }

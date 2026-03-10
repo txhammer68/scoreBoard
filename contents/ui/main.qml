@@ -7,7 +7,7 @@ import org.kde.plasma.configuration
 import org.kde.kirigami as Kirigami
 import org.kde.plasma.plasma5support as Plasma5Support
 import org.kde.notification
-import "./data/scoresAPI.js" as ScoresAPI
+import "./scripts/scoresAPI.js" as ScoresAPI
 
 // Scoreboard Widget
 // USA sports MLB,NBA,NFL,MLS,NHL,WNBA,World Cup
@@ -23,6 +23,7 @@ PlasmoidItem {
     property string gameTypeIdx: plasmoid.configuration.gameIdx
     property string gameTypeURL:ScoresAPI.urls[gameTypeIdx]
     property bool viewMode:plasmoid.configuration.viewMode
+    property bool autoUpdate:plasmoid.configuration.chkBoxUpdate
     property var scoreBoard:{}
     property bool activeGames:false
 
@@ -36,7 +37,7 @@ PlasmoidItem {
     Component.onCompleted: {
         if (gameTypeURL.length > 0) {
             getData(gameTypeURL)
-            getData(updateURL)
+            autoUpdate ? getData(updateURL):""
             gameTimer.start()
         } else {
             isConfigured=false
@@ -182,7 +183,7 @@ PlasmoidItem {
         repeat:  false
         onTriggered: {
             getData(gameTypeURL)
-            getData(updateURL)
+            autoUpdate ? getData(updateURL):""
             gameTimer.restart()
         }
     }
