@@ -130,9 +130,9 @@ PlasmoidItem {
                   activeGames=true
                   return null
               }
-           activeGames=false
-           return null
         }
+        activeGames=false
+        return null
     }
 
     function gameState(index) {
