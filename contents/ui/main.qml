@@ -189,9 +189,9 @@ PlasmoidItem {
     }
 
     Connections {
-        target: NetworkInformation
-        function onReachabilityChanged(newReachability) {
-            if (newReachability === NetworkInformation.Online) {
+        target:NetworkInformation
+        onReachabilityChanged: {
+            if (NetworkInformation.reachability == 4) {
                 suspendTimer.start();
             }
         }
