@@ -86,7 +86,7 @@ Item {
                     id:gameStatus
                     leftPadding:10
                     text:gameState(index).split(',')[0]
-                    color:(scoreBoard.events[index].status.type.state == "in") ? Kirigami.Theme.textColor : Kirigami.Theme.disabledTextColor
+                   color: (scoreBoard.events[index].status.type.state == "in") ? "green" : (scoreBoard.events[index].status.type.state == "post") ? "red" : Kirigami.Theme.disabledTextColor
                     font.pointSize:10
                     anchors.horizontalCenter:parent.horizontalCenter
                 }
