@@ -203,6 +203,13 @@ Item {
             }
         }
     }
+    ScrollView {
+        visible: scoreBoard.events.length > 0
+        Layout.fillWidth: true
+        Layout.fillHeight: true
+        width: fullRepresentation.width
+        height: viewHeight
+        clip: true
 
         ListView {
             id:scoresList
