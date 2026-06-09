@@ -2,7 +2,6 @@ import QtQuick
 import QtQuick.Layouts
 import org.kde.plasma.plasmoid
 import org.kde.kirigami as Kirigami
-import Qt5Compat.GraphicalEffects
 
 Item {
     id: compactRep
@@ -37,17 +36,10 @@ Item {
         Text {
             text: isConfigured ? getGameType () : "?"
             color: Kirigami.Theme.textColor
-           // verticalAlignment: Text.AlignVCenter
             font.pointSize: 12
+            antialiasing : true
+            opacity:activeGames ? 1:.40
             Layout.alignment: Qt.AlignVCenter
-         ColorOverlay {
-                id:iconOverlay
-                anchors.fill:parent
-                source: parent
-                color: activeGames ? "transparent":"gray"
-                opacity:.65
-                smooth:true
-            }
         }
     }
 }
