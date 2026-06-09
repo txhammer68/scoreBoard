@@ -7,6 +7,9 @@
 * KDE Plasma 6 sKoreboard Widget
 * Get Sports Scores for MLB,NBA,NFL,NHL,MLS,WNBA,World Cup
 
+#### Panel icon View
+ <img alt="preview" src=panelView.png" width="40%">
+ 
 #### Compact View
  <img alt="preview" src="preview1.png" width="40%">
  
