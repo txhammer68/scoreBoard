@@ -32,9 +32,17 @@ Item {
        height:viewHeight
    }
 
-  Component {
-        id: configRepresentation
+   Component {
+        id: highlight
+        Rectangle {
+            width: scoresList.width; height: scoresList.height
+            color: "transparent";
+            y: scoresList.currentItem.y
+        }
+    }
 
+    Component {
+        id: configRepresentation
 
         Rectangle {
             width:248
@@ -43,7 +51,8 @@ Item {
             radius:6
             antialiasing : true
             anchors.horizontalCenter:parent.horizontalCenter
-            anchors.verticalCenter:parent.verticalCenter
+            anchors.top:parent.top
+            anchors.topMargin:20
             border.color:Kirigami.Theme.disabledTextColor
 
             Text {
@@ -51,7 +60,6 @@ Item {
                 color:Kirigami.Theme.textColor
                 anchors.centerIn:parent
                 font.pointSize:16
-                //bottomPadding:70
             }
             MouseArea {
                 anchors.fill: parent
@@ -64,22 +72,6 @@ Item {
         }
     }
 
-   Component {
-        id: highlight
-        Rectangle {
-            width: scoresList.width; height: scoresList.height
-            color: "transparent";
-            y: scoresList.currentItem.y
-            Behavior on y {
-                // smooth scroll animation
-                NumberAnimation {
-                    id:smoothScroll
-                    duration: 1100
-                    easing.type: Easing.OutQuad
-                }
-            }
-        }
-    }
 
     Component {
         id: fullRep
@@ -112,22 +104,22 @@ Item {
                 anchors.horizontalCenter:parent.horizontalCenter
                 anchors.verticalCenter:parent.verticalCenter
                 spacing:0
-                topPadding:2
-                leftPadding:20
+                topPadding:-2
                 Text {
                     id:gameStatus
-                    leftPadding:10
                     text:gameState(index).split(',')[0]
+                    //color:(scoreBoard.events[index].status.type.state == "in") ? Kirigami.Theme.textColor : Kirigami.Theme.disabledTextColor
                     color: (scoreBoard.events[index].status.type.state == "in") ? "green" : (scoreBoard.events[index].status.type.state == "post") ? "red" : Kirigami.Theme.disabledTextColor
                     font.pointSize:11
+                    antialiasing:true
                     anchors.horizontalCenter:parent.horizontalCenter
                 }
 
                 Text {
-                    text:(scoreBoard.events[index].status.type.state == "in") ? scoreBoard.events[index].status.displayClock : Qt.formatDateTime(new Date(scoreBoard.events[index].date),"M/dd/yy")
-                    leftPadding:10
+                    text:(scoreBoard.events[index].status.type.state == "in") ? scoreBoard.leagues[0].abbreviation != "MLB" ? scoreBoard.events[index].status.displayClock : "" : Qt.formatDateTime(new Date(scoreBoard.events[index].date),"M/dd/yy")
                     color:(scoreBoard.events[index].status.type.state == "in") ? Kirigami.Theme.textColor : Kirigami.Theme.disabledTextColor
                     font.pointSize:11
+                    antialiasing:true
                     anchors.horizontalCenter:parent.horizontalCenter
                 }
             }
@@ -160,6 +152,7 @@ Item {
                         text:scoreBoard.events[index].competitions[0].competitors[0].team.displayName
                         color:Kirigami.Theme.textColor
                         font.pointSize:14
+                        antialiasing : true
                         width:80
                         leftPadding:10
                         Layout.fillWidth:true
@@ -172,6 +165,7 @@ Item {
                         color:scoreBoard.events[index].competitions[0].competitors[0].hasOwnProperty("winner") ? winningTeam(scoreBoard.events[index].competitions[0].competitors[0].winner,index):Kirigami.Theme.textColor
                         font.pointSize:14
                         font.bold:false
+                        antialiasing : true
                         horizontalAlignment:Qt.AlignLeft
                         Layout.fillWidth:false
                         bottomPadding:5
@@ -200,6 +194,7 @@ Item {
                         text:scoreBoard.events[index].competitions[0].competitors[1].team.displayName
                         color:Kirigami.Theme.textColor
                         font.pointSize:14
+                        antialiasing : true
                         width:80
                         leftPadding:10
                         horizontalAlignment:Qt.AlignLeft
@@ -212,6 +207,7 @@ Item {
                         color:scoreBoard.events[index].competitions[0].competitors[1].hasOwnProperty("winner") ? winningTeam(scoreBoard.events[index].competitions[0].competitors[1].winner,index):Kirigami.Theme.textColor
                         font.pointSize:14
                         font.bold:false
+                        antialiasing : true
                         horizontalAlignment:Qt.AlignLeft
                         bottomPadding:5
                         rightPadding:10
@@ -225,6 +221,7 @@ Item {
                 text:scoreBoard.events[index].competitions[0].hasOwnProperty("headlines") ? scoreBoard.events[index].competitions[0].headlines[0].shortLinkText : ""
                 color:Kirigami.Theme.textColor
                 font.pointSize:10
+                antialiasing : true
                 horizontalAlignment:Qt.AlignLeft
                 leftPadding:5
                 topPadding:2
@@ -235,19 +232,23 @@ Item {
             }
         }
     }
+
     ScrollView {
         visible: scoreBoard.events.length > 0
         Layout.fillWidth: true
         Layout.fillHeight: true
         width: fullRepresentation.width
         height: viewHeight
+        anchors.top:fullRepresentation.top
+        anchors.left:fullRepresentation.left
+
         clip: true
 
         ListView {
             id:scoresList
             anchors.top:fullRepresentation.top
             anchors.left:fullRepresentation.left
-            anchors.margins:4
+            anchors.margins:6
             height:viewHeight
             width:fullRepresentation.width
             spacing:viewMode ? 2:8
@@ -273,4 +274,5 @@ Item {
                 }
             }
         }
+    }
 }
