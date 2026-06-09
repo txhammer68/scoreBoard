@@ -14,7 +14,7 @@
         ],
         "Icon": "atlantikdesigner",
         "Id": "scoreBoard",
-        "License": "GPL-3.0",
+        "License": "GPL-2.0",
         "Name": "Score Board",
         "Version": "2.44",
         "Website": "https://github.com/txhammer68/scoreBoard"
