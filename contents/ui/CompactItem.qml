@@ -29,7 +29,7 @@ Item {
              return "⚽" }
     }
         Text {
-           anchors.fill: parent
+            anchors.fill: parent
             text: isConfigured ? getGameType () : "?"
             color: Kirigami.Theme.textColor
             font.pointSize: 12
