@@ -32,6 +32,38 @@ Item {
        height:viewHeight
    }
 
+  Component {
+        id: configRepresentation
+
+
+        Rectangle {
+            width:248
+            height:28
+            color:"transparent"
+            radius:6
+            antialiasing : true
+            anchors.horizontalCenter:parent.horizontalCenter
+            anchors.verticalCenter:parent.verticalCenter
+            border.color:Kirigami.Theme.disabledTextColor
+
+            Text {
+                text:"Configure ScoreBoard"
+                color:Kirigami.Theme.textColor
+                anchors.centerIn:parent
+                font.pointSize:16
+                //bottomPadding:70
+            }
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                hoverEnabled:true
+                onEntered: parent.border.color=Kirigami.Theme.linkColor
+                onExited:parent.border.color=Kirigami.Theme.textColor
+                onClicked:plasmoid.internalAction("configure").trigger()
+            }
+        }
+    }
+
    Component {
         id: highlight
         Rectangle {
@@ -79,14 +111,14 @@ Item {
                 id:gameTimes
                 anchors.horizontalCenter:parent.horizontalCenter
                 anchors.verticalCenter:parent.verticalCenter
-                spacing:1
-                topPadding:4
+                spacing:0
+                topPadding:2
                 leftPadding:20
                 Text {
                     id:gameStatus
                     leftPadding:10
                     text:gameState(index).split(',')[0]
-                   color: (scoreBoard.events[index].status.type.state == "in") ? "green" : (scoreBoard.events[index].status.type.state == "post") ? "red" : Kirigami.Theme.disabledTextColor
+                    color: (scoreBoard.events[index].status.type.state == "in") ? "green" : (scoreBoard.events[index].status.type.state == "post") ? "red" : Kirigami.Theme.disabledTextColor
                     font.pointSize:11
                     anchors.horizontalCenter:parent.horizontalCenter
                 }
@@ -220,12 +252,12 @@ Item {
             width:fullRepresentation.width
             spacing:viewMode ? 2:8
             clip:true
-            model: scoreBoard.events.length
+            model: !Plasmoid.configurationRequired ? scoreBoard.events.length:1
             highlight:highlight
             highlightMoveDuration:1000
             highlightMoveVelocity:-1
             highlightFollowsCurrentItem:scoresList.currentIndex !== -1 ? true:false
-            delegate:fullRep
+            delegate:!Plasmoid.configurationRequired ? fullRep:configRepresentation
 
             Timer {
                 id:init
