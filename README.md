@@ -8,7 +8,7 @@
 * Get Sports Scores for MLB,NBA,NFL,NHL,MLS,WNBA,World Cup
 
 #### Panel icon View
- <img alt="preview" src=panelView.png" width="40%">
+ <img alt="preview" src="panelView.png" width="40%">
  
 #### Compact View
  <img alt="preview1" src="preview1.png" width="40%">
