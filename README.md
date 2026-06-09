@@ -32,14 +32,15 @@ kpackagetool6 --remove scoreBoard --type Plasma/Applet
 * Select View
 
 #### Notes
-* update interval is dynamic; 5 minutes when any game is active, 30 minutes if no games
-* compact view is ideal for desktop floating widget, there is an animation that cycles thru all the games
-* full view is scrollable with mouse wheel
+* Add multiple scoreboards for different sport types
+* Panel icon changes for active games, full opacity for active games, 65% for no active games
+* Update interval is dynamic; 2 minutes when any game is active, 30 minutes if no games
+* Compact view is ideal for desktop floating widget, there is an animation that cycles thru all the games
+* Full view is scrollable with mouse wheel,ideal for panel placement
 * left click on any game to view more details on the web
 * middle click on any game to refresh data
 * When system wakes from suspend/sleep mode, widget will refresh after network connection is established
 * You can resize popup to get proper fit
-* Add multiple scoreboards for different sport types
 * Added Update Widget Button in the Config Screen
     * Automatically checks for updates on first load and wake from sleep mode
     * Widget will send a system notification message when update is available
