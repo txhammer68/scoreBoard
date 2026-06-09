@@ -16,11 +16,11 @@
 
 * Install with
  ``` bash
-git clone https://github.com/TxHammer68/scoreBoard /tmp/scoreBoard && kpackagetool6 -t Plasma/Applet -i /tmp/skoreboard/
+git clone https://github.com/TxHammer68/scoreBoard /tmp/scoreBoard && kpackagetool6 -t Plasma/Applet -i /tmp/scoreboard/
 ```
 * Upgrade with
 ``` bash
-git clone https://github.com/TxHammer68/scoreBoard /tmp/scoreBoard && kpackagetool6 -t Plasma/Applet -u /tmp/skoreBoard
+git clone https://github.com/TxHammer68/scoreBoard /tmp/scoreBoard && kpackagetool6 -t Plasma/Applet -u /tmp/scoreBoard
 ```
 * Remove with
 ``` bash
