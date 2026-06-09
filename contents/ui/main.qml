@@ -26,8 +26,7 @@ PlasmoidItem {
     property bool autoUpdate:plasmoid.configuration.chkBoxUpdate
     property var scoreBoard:{}
     property bool activeGames:false
-
-    property int viewHeight: viewMode ?  124 : 400
+    property int viewHeight: viewMode ?  124 : scoreBoard.events.length > 4 ? 132*4:132*scoreBoard.events.length
     property int viewWidth:420
 
     property double currentVersion:Plasmoid.metaData.version
