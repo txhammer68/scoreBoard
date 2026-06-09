@@ -80,14 +80,14 @@ Item {
                 anchors.horizontalCenter:parent.horizontalCenter
                 anchors.verticalCenter:parent.verticalCenter
                 spacing:1
-                topPadding:-5
+                topPadding:4
                 leftPadding:20
                 Text {
                     id:gameStatus
                     leftPadding:10
                     text:gameState(index).split(',')[0]
                    color: (scoreBoard.events[index].status.type.state == "in") ? "green" : (scoreBoard.events[index].status.type.state == "post") ? "red" : Kirigami.Theme.disabledTextColor
-                    font.pointSize:10
+                    font.pointSize:11
                     anchors.horizontalCenter:parent.horizontalCenter
                 }
 
@@ -95,7 +95,7 @@ Item {
                     text:(scoreBoard.events[index].status.type.state == "in") ? scoreBoard.events[index].status.displayClock : Qt.formatDateTime(new Date(scoreBoard.events[index].date),"M/dd/yy")
                     leftPadding:10
                     color:(scoreBoard.events[index].status.type.state == "in") ? Kirigami.Theme.textColor : Kirigami.Theme.disabledTextColor
-                    font.pointSize:10
+                    font.pointSize:11
                     anchors.horizontalCenter:parent.horizontalCenter
                 }
             }
