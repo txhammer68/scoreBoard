@@ -241,16 +241,12 @@ Item {
         height: viewHeight
         anchors.top:fullRepresentation.top
         anchors.left:fullRepresentation.left
-
+        anchors.margins:4
         clip: true
 
         ListView {
             id:scoresList
-            anchors.top:fullRepresentation.top
-            anchors.left:fullRepresentation.left
-            anchors.margins:6
-            height:viewHeight
-            width:fullRepresentation.width
+            anchors.fill:parent
             spacing:viewMode ? 2:8
             clip:true
             model: !Plasmoid.configurationRequired ? scoreBoard.events.length:1
