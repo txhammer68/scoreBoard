@@ -1,9 +1,11 @@
-<a href="https://kde.org/plasma-desktop/">
-  <img src="https://img.shields.io/badge/KDE_Plasma-6.0+-blue?style=for-the-badge&logo=kde" alt="KDE Plasma 6">
-</a>
+
 <p align="center">
+   <a href="https://kde.org/plasma-desktop/">
     <img src="https://img.shields.io/badge/KDE_Plasma-6.0+-blue?style=for-the-badge&logo=kde" alt="KDE Plasma 6">
-    <img src="https://img.shields.io/badge/license-GPL--3.0-green?style=for-the-badge" alt="License">
+  </a>
+  <a href="">
+  <img src=""https://img.shields.io/badge/license-GPL--2.0-green?style=for-the-badge" alt="License">
+</a>
 </p>
 
 # scoreBoard
