@@ -32,12 +32,20 @@ Item {
        height:viewHeight
    }
 
-   Component {
+    Component {
         id: highlight
         Rectangle {
             width: scoresList.width; height: scoresList.height
             color: "transparent";
             y: scoresList.currentItem.y
+            Behavior on y {
+                // smooth scroll animation
+                NumberAnimation {
+                    id:smoothScroll
+                    duration: 1100
+                    easing.type: Easing.OutQuad
+                }
+            }
         }
     }
 
@@ -233,20 +241,15 @@ Item {
         }
     }
 
-    ScrollView {
-        visible: scoreBoard.events.length > 0
-        Layout.fillWidth: true
-        Layout.fillHeight: true
-        width: fullRepresentation.width
-        height: viewHeight
-        anchors.top:fullRepresentation.top
-        anchors.left:fullRepresentation.left
-        anchors.margins:4
-        clip: true
-
         ListView {
             id:scoresList
-            anchors.fill:parent
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            width: fullRepresentation.width
+            height: viewHeight
+            anchors.top:fullRepresentation.top
+            anchors.left:fullRepresentation.left
+            anchors.margins:4
             spacing:viewMode ? 2:8
             clip:true
             model: !Plasmoid.configurationRequired ? scoreBoard.events.length:1
@@ -269,6 +272,5 @@ Item {
                     else scoresList.incrementCurrentIndex();
                 }
             }
-        }
     }
 }
