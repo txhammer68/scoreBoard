@@ -6,10 +6,13 @@ import org.kde.plasma.plasmoid
 
 Item {
     id: fullRepresentation
-    Layout.preferredWidth:fullRepresentation.width
-    Layout.preferredHeight:fullRepresentation.height
-    Layout.minimumWidth:120
-    Layout.maximumWidth:460
+    Layout.preferredWidth:viewWidth
+    Layout.preferredHeight:viewHeight+10
+    Layout.minimumWidth:viewWidth/2
+    Layout.maximumWidth:viewWidth*1.5
+    Layout.minimumHeight:124
+    Layout.maximumHeight:132*6
+
     width:viewWidth
     height:viewHeight
 
