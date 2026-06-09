@@ -36,7 +36,7 @@ kpackagetool6 --remove scoreBoard --type Plasma/Applet
 
 #### Notes
 * Add multiple scoreboards for different sport types
-* Panel icon changes for active games, full opacity for active games, 65% for no active games
+* Panel icon changes for active/inactive games
 * Update interval is dynamic; 2 minutes when any game is active, 30 minutes if no games
 * Compact view is ideal for desktop floating widget, there is an animation that cycles thru all the games
 * Full view is scrollable with mouse wheel,ideal for panel placement
