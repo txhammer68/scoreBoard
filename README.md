@@ -19,7 +19,7 @@
 
 * Install with
  ``` bash
-git clone https://github.com/TxHammer68/scoreBoard /tmp/scoreBoard && kpackagetool6 -t Plasma/Applet -i /tmp/scoreboard/
+git clone https://github.com/TxHammer68/scoreBoard /tmp/scoreBoard && kpackagetool6 -t Plasma/Applet -i /tmp/scoreBoard/
 ```
 * Upgrade with
 ``` bash
