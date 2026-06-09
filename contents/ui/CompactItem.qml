@@ -15,26 +15,29 @@ Item {
     }
 
     function getGameType () {
-        if (gameType == "MLB") {
+        if (gameTypeIdx == 0) {
             return "⚾" }
-        else if (gameType == "NFL") {
-             return "🏈" }
-        else if (gameType == "NBA") {
-             return "🏀" }
-        else if (gameType == "NHL") {
-             return "🏒" }
-        else if (gameType == "WNBA") {
-             return "🏀" }
-        else if (gameType == "MLS") {
+        else if (gameTypeIdx == 1) {
              return "⚽" }
+        else if (gameTypeIdx == 2) {
+             return "🏀" }
+        else if (gameTypeIdx == 3) {
+             return "🏈" }
+        else if (gameTypeIdx == 4) {
+             return "🏒" }
+        else if (gameTypeIdx == 5) {
+             return "🏀" }
+        else if (gameTypeIdx == 6) {
+            return "⚽" }
+
     }
         Text {
-            anchors.fill: parent
-            text: isConfigured ? getGameType () : "?"
+            anchors.centerIn: parent
+            text:isConfigured ? getGameType () : "?"
             color: Kirigami.Theme.textColor
-            font.pointSize: Kirigami.Units.iconSizes.small // 12
+            font.pointSize: 12
             antialiasing : true
             opacity:activeGames ? 1:.40
-            Layout.alignment: Qt.AlignVCenter
+            leftPadding:6
         }
 }
