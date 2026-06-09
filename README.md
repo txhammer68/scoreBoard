@@ -1,7 +1,7 @@
-<p align="center">
+<a align="center">
     <img src="https://img.shields.io/badge/KDE_Plasma-6.0+-blue?style=for-the-badge&logo=kde" alt="KDE Plasma 6">
     <img src="https://img.shields.io/badge/license-GPL--3.0-green?style=for-the-badge" alt="License">
-</p>
+</a>
 
 # scoreBoard
 * KDE Plasma 6 sKoreboard Widget
