@@ -32,7 +32,7 @@ Item {
             anchors.fill: parent
             text: isConfigured ? getGameType () : "?"
             color: Kirigami.Theme.textColor
-            font.pointSize: 12
+            font.pointSize: Kirigami.Units.iconSizes.small // 12
             antialiasing : true
             opacity:activeGames ? 1:.40
             Layout.alignment: Qt.AlignVCenter
