@@ -28,12 +28,8 @@ Item {
         else if (gameType == "MLS") {
              return "⚽" }
     }
-    RowLayout {
-        id: simpleLayout
-        anchors.fill: parent
-        spacing: 0
-
         Text {
+           anchors.fill: parent
             text: isConfigured ? getGameType () : "?"
             color: Kirigami.Theme.textColor
             font.pointSize: 12
@@ -41,5 +37,4 @@ Item {
             opacity:activeGames ? 1:.40
             Layout.alignment: Qt.AlignVCenter
         }
-    }
 }
