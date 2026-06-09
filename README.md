@@ -11,10 +11,10 @@
  <img alt="preview" src=panelView.png" width="40%">
  
 #### Compact View
- <img alt="preview" src="preview1.png" width="40%">
+ <img alt="preview1" src="preview1.png" width="40%">
  
 #### Full View
- <img alt="preview" src="preview3.png" width="40%">
+ <img alt="preview2" src="preview3.png" width="40%">
  
 
 * Install with
