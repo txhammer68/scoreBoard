@@ -5,24 +5,39 @@
       http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
   <kcfgfile name=""/>
   <group name="Scoreboard">
+    <entry name="gameType" type="string">
+      <label>Select Game Type</label>
+      <attribute name="gameType" use="optional" type="string"/>
+    </entry>
+    <entry name="gameTypeURL" type="string">
+      <attribute name="gameTypeURL" use="optional" type="string"/>
+    </entry>
     <entry name="gameIdx" type="int">
-      <attribute name="gameIdx" type="int"/>
+      <attribute name="gameIdx" use="required" type="int"/>
+      <default>-1</default>
+    </entry>
+    <entry name="favTeam" type="string">
+      <label>Select Team</label>
+      <attribute name="teamSel.displayText" use="optional" type="string"/>
+    </entry>
+    <entry name="favTeamIdx" type="int">
+      <attribute name="favTeamIdx" use="required" type="int"/>
       <default>-1</default>
     </entry>
     <entry name="viewMode" type="Bool">
-       <attribute name="viewMode" type="Bool"/>
+      <attribute name="viewMode" use="required" type="Bool"/>
       <default>true</default>
     </entry>
     <entry name="chkBoxCompact" type="Bool">
-       <attribute name="chkBoxCompact" type="Bool"/>
+      <attribute name="chkBoxCompact" use="required" type="Bool"/>
       <default>true</default>
     </entry>
     <entry name="chkBoxFull" type="Bool">
-       <attribute name="chkBoxFull" type="Bool"/>
+      <attribute name="chkBoxFull" type="Bool"/>
       <default>false</default>
     </entry>
     <entry name="chkBoxUpdate" type="Bool">
-      <attribute name="chkBoxUpdate" type="Bool"/>
+      <attribute name="chkBoxUpdate" use="required" type="Bool"/>
       <default>true</default>
     </entry>
   </group>

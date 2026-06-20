@@ -40,7 +40,7 @@ Item {
         Rectangle {
             width: scoresList.width; height: scoresList.height
             color: "transparent";
-            y: scoresList.currentItem.y
+            y: scoresList.currentItem.y ? scoresList.currentItem.y:0
             Behavior on y {
                 // smooth scroll animation
                 NumberAnimation {
@@ -56,14 +56,11 @@ Item {
         id: configRepresentation
 
         Rectangle {
-            width:248
-            height:28
+            visible:Plasmoid.configurationRequired
+            anchors.fill:parent
             color:"transparent"
             radius:6
             antialiasing : true
-            anchors.horizontalCenter:parent.horizontalCenter
-            anchors.top:parent.top
-            anchors.topMargin:20
             border.color:Kirigami.Theme.disabledTextColor
 
             Text {
@@ -81,8 +78,7 @@ Item {
                 onClicked:plasmoid.internalAction("configure").trigger()
             }
         }
-    }
-
+}
 
     Component {
         id: fullRep
@@ -106,29 +102,29 @@ Item {
                 onEntered:parent.color=Kirigami.Theme.activeBackgroundColor
                 onExited:parent.color=Kirigami.Theme.backgroundColor
                 onClicked: (mouse)=> {
-                    mouse.button == Qt.LeftButton ? Qt.openUrlExternally(scoreBoard.events[index].links[0].href) : getData(gameTypeURL)
+                    mouse.button == Qt.LeftButton ? Qt.openUrlExternally(scoreBoard[index].gameBoxScoresURL) : getData(gameTypeURL)
                 }
             }
 
             Column {
                 id:gameTimes
-                anchors.horizontalCenter:parent.horizontalCenter
                 anchors.verticalCenter:parent.verticalCenter
+                anchors.left:parent.left
+                anchors.leftMargin:290
                 spacing:0
-                topPadding:-2
+                topPadding:-4
                 Text {
                     id:gameStatus
                     text:gameState(index).split(',')[0]
-                    //color:(scoreBoard.events[index].status.type.state == "in") ? Kirigami.Theme.textColor : Kirigami.Theme.disabledTextColor
-                    color: (scoreBoard.events[index].status.type.state == "in") ? "green" : (scoreBoard.events[index].status.type.state == "post") ? "red" : Kirigami.Theme.disabledTextColor
+                    color: (scoreBoard[index].gameStatusState == "in") ? "green" : (scoreBoard[index].gameStatusState == "post") ? "red" : Kirigami.Theme.disabledTextColor
                     font.pointSize:11
                     antialiasing:true
                     anchors.horizontalCenter:parent.horizontalCenter
                 }
 
                 Text {
-                    text:(scoreBoard.events[index].status.type.state == "in") ? scoreBoard.leagues[0].abbreviation != "MLB" ? scoreBoard.events[index].status.displayClock : "" : Qt.formatDateTime(new Date(scoreBoard.events[index].date),"M/dd/yy")
-                    color:(scoreBoard.events[index].status.type.state == "in") ? Kirigami.Theme.textColor : Kirigami.Theme.disabledTextColor
+                    text:(scoreBoard[index].gameStatusState == "in") ? scoreBoard[index].leagueAbbreviation !== "MLB" ? scoreBoard[index].gameClock : "" : Qt.formatDateTime(new Date(scoreBoard[index].gameDate),"M/dd/yy")
+                    color:(scoreBoard[index].gameStatusState == "in") ? Kirigami.Theme.textColor : Kirigami.Theme.disabledTextColor
                     font.pointSize:11
                     antialiasing:true
                     anchors.horizontalCenter:parent.horizontalCenter
@@ -149,7 +145,7 @@ Item {
 
                     Image {
                         id:atl
-                        source: scoreBoard.events[index].competitions[0].competitors[0].team.logo
+                        source: scoreBoard[index].awayTeamLogo
                         width:48
                         horizontalAlignment:Qt.AlignLeft
                         sourceSize.height:height
@@ -160,7 +156,7 @@ Item {
 
                     Text {
                         id:ateam
-                        text:scoreBoard.events[index].competitions[0].competitors[0].team.displayName
+                        text:scoreBoard[index].awayTeamName
                         color:Kirigami.Theme.textColor
                         font.pointSize:14
                         antialiasing : true
@@ -172,8 +168,8 @@ Item {
 
                     Text {
                         id:ats
-                        text:scoreBoard.events[index].competitions[0].competitors[0].score
-                        color:scoreBoard.events[index].competitions[0].competitors[0].hasOwnProperty("winner") ? winningTeam(scoreBoard.events[index].competitions[0].competitors[0].winner,index):Kirigami.Theme.textColor
+                        text:scoreBoard[index].awayTeamScore
+                        color:winningTeam(scoreBoard[index].awayTeamWinner,index)
                         font.pointSize:14
                         font.bold:false
                         antialiasing : true
@@ -192,7 +188,7 @@ Item {
 
                     Image{
                         id:htl
-                        source: scoreBoard.events[index].competitions[0].competitors[1].team.logo
+                        source: scoreBoard[index].homeTeamLogo
                         width:48
                         sourceSize.height:height
                         sourceSize.width:width
@@ -202,7 +198,7 @@ Item {
 
                     Text {
                         id:hta
-                        text:scoreBoard.events[index].competitions[0].competitors[1].team.displayName
+                        text:scoreBoard[index].homeTeamName
                         color:Kirigami.Theme.textColor
                         font.pointSize:14
                         antialiasing : true
@@ -214,8 +210,8 @@ Item {
 
                     Text {
                         id:hts
-                        text: scoreBoard.events[index].competitions[0].competitors[1].score
-                        color:scoreBoard.events[index].competitions[0].competitors[1].hasOwnProperty("winner") ? winningTeam(scoreBoard.events[index].competitions[0].competitors[1].winner,index):Kirigami.Theme.textColor
+                        text: scoreBoard[index].homeTeamScore
+                        color:winningTeam(scoreBoard[index].homeTeamWinner,index)
                         font.pointSize:14
                         font.bold:false
                         antialiasing : true
@@ -229,7 +225,7 @@ Item {
             Text {
                 anchors.bottom:rect1.bottom
                 anchors.left:rect1.left
-                text:scoreBoard.events[index].competitions[0].hasOwnProperty("headlines") ? scoreBoard.events[index].competitions[0].headlines[0].shortLinkText : ""
+                text:scoreBoard[index].gameHeadline
                 color:Kirigami.Theme.textColor
                 font.pointSize:10
                 antialiasing : true
@@ -253,22 +249,22 @@ Item {
             anchors.top:fullRepresentation.top
             anchors.left:fullRepresentation.left
             anchors.margins:4
-            spacing:viewMode ? 2:8
+            spacing:viewMode ? 4:8
             clip:true
-            model: !Plasmoid.configurationRequired ? scoreBoard.events.length:1
+            model: Plasmoid.configurationRequired ? 1:scoreBoard.length
             highlight:highlight
             highlightMoveDuration:1000
             highlightMoveVelocity:-1
             highlightFollowsCurrentItem:scoresList.currentIndex !== -1 ? true:false
-            delegate:!Plasmoid.configurationRequired ? fullRep:configRepresentation
+            delegate:Plasmoid.configurationRequired ? configRepresentation:fullRep
 
             Timer {
                 id:init
-                running:viewMode
-                repeat:true
+                running:viewMode && !Plasmoid.configurationRequired
+                repeat: true
                 interval:10000
                 onTriggered:{
-                    if (scoresList.currentIndex >= scoreBoard.events.length-1) {
+                    if (scoresList.currentIndex >= scoreBoard.length-1) {
                         scoresList.currentIndex=-1
                         scoresList.incrementCurrentIndex();
                     }

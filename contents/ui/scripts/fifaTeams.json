@@ -1,0 +1,198 @@
+{
+  "scoresURL": "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard",
+  "teamsURL": "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/teams",
+  "teams": [
+    {
+      "id": "624",
+      "name": "Algeria"
+    },
+    {
+      "id": "202",
+      "name": "Argentina"
+    },
+    {
+      "id": "628",
+      "name": "Australia"
+    },
+    {
+      "id": "474",
+      "name": "Austria"
+    },
+    {
+      "id": "459",
+      "name": "Belgium"
+    },
+    {
+      "id": "452",
+      "name": "Bosnia-Herzegovina"
+    },
+    {
+      "id": "205",
+      "name": "Brazil"
+    },
+    {
+      "id": "206",
+      "name": "Canada"
+    },
+    {
+      "id": "2597",
+      "name": "Cape Verde"
+    },
+    {
+      "id": "208",
+      "name": "Colombia"
+    },
+    {
+      "id": "2850",
+      "name": "Congo DR"
+    },
+    {
+      "id": "477",
+      "name": "Croatia"
+    },
+    {
+      "id": "11678",
+      "name": "Cura\u00e7ao"
+    },
+    {
+      "id": "450",
+      "name": "Czechia"
+    },
+    {
+      "id": "209",
+      "name": "Ecuador"
+    },
+    {
+      "id": "2620",
+      "name": "Egypt"
+    },
+    {
+      "id": "448",
+      "name": "England"
+    },
+    {
+      "id": "478",
+      "name": "France"
+    },
+    {
+      "id": "481",
+      "name": "Germany"
+    },
+    {
+      "id": "4469",
+      "name": "Ghana"
+    },
+    {
+      "id": "2654",
+      "name": "Haiti"
+    },
+    {
+      "id": "469",
+      "name": "Iran"
+    },
+    {
+      "id": "4375",
+      "name": "Iraq"
+    },
+    {
+      "id": "4789",
+      "name": "Ivory Coast"
+    },
+    {
+      "id": "627",
+      "name": "Japan"
+    },
+    {
+      "id": "2917",
+      "name": "Jordan"
+    },
+    {
+      "id": "203",
+      "name": "Mexico"
+    },
+    {
+      "id": "2869",
+      "name": "Morocco"
+    },
+    {
+      "id": "449",
+      "name": "Netherlands"
+    },
+    {
+      "id": "2666",
+      "name": "New Zealand"
+    },
+    {
+      "id": "464",
+      "name": "Norway"
+    },
+    {
+      "id": "2659",
+      "name": "Panama"
+    },
+    {
+      "id": "210",
+      "name": "Paraguay"
+    },
+    {
+      "id": "482",
+      "name": "Portugal"
+    },
+    {
+      "id": "4398",
+      "name": "Qatar"
+    },
+    {
+      "id": "655",
+      "name": "Saudi Arabia"
+    },
+    {
+      "id": "580",
+      "name": "Scotland"
+    },
+    {
+      "id": "654",
+      "name": "Senegal"
+    },
+    {
+      "id": "467",
+      "name": "South Africa"
+    },
+    {
+      "id": "451",
+      "name": "South Korea"
+    },
+    {
+      "id": "164",
+      "name": "Spain"
+    },
+    {
+      "id": "466",
+      "name": "Sweden"
+    },
+    {
+      "id": "475",
+      "name": "Switzerland"
+    },
+    {
+      "id": "659",
+      "name": "Tunisia"
+    },
+    {
+      "id": "465",
+      "name": "T\u00fcrkiye"
+    },
+    {
+      "id": "660",
+      "name": "United States"
+    },
+    {
+      "id": "212",
+      "name": "Uruguay"
+    },
+    {
+      "id": "2570",
+      "name": "Uzbekistan"
+    }
+  ]
+}

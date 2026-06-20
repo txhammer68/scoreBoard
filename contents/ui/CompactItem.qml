@@ -31,9 +31,10 @@ Item {
             return "⚽" }
 
     }
+
         Text {
             anchors.centerIn: parent
-            text:isConfigured ? getGameType () : "?"
+            text:Plasmoid.configurationRequired ? "?":getGameType ()
             color: Kirigami.Theme.textColor
             font.pointSize: 12
             antialiasing : true
