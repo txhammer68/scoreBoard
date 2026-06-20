@@ -8,15 +8,15 @@
         ],
         "BugReportUrl": "https://github.com/txhammer68/scoreBoard/issues",
         "Category": "Online Services",
-        "Description": "Plasma Widget Showing Sports Scores",
+        "Description": "Plasma Widget for Sports Scores",
         "FormFactors": [
             "desktop"
         ],
         "Icon": "atlantikdesigner",
         "Id": "scoreBoard",
         "License": "GPL-2.0",
-        "Name": "Score Board",
-        "Version": "2.44",
+        "Name": "ScoreBoard",
+        "Version": "2.54",
         "Website": "https://github.com/txhammer68/scoreBoard"
     },
     "X-Plasma-NotificationArea": "true",
