@@ -22,8 +22,6 @@
 * Select sport type
 * Select favorite team
 * Select view
-
-#### Notes
 * Add multiple scoreboards for different sport types
 * Panel icon changes for active/inactive games
 * Update interval is dynamic; 2 minutes when any game is active, 30 minutes if no games
