@@ -23,6 +23,7 @@
 * Select favorite team
 * Select view
 
+ 
  #### Notes
 * Add multiple scoreboards for different sport types
 * Panel icon changes for active/inactive games
