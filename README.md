@@ -19,8 +19,9 @@
 #### Setup
 * Install widget to panel or desktop floating
 * Right click on widget to configure
-* Select Sport Type
-* Select View
+* Select sport type
+* Select favorite team
+* Select view
 
  #### Notes
 * Add multiple scoreboards for different sport types
