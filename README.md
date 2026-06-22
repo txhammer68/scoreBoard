@@ -16,8 +16,7 @@
 #### Full View
  <img alt="preview2" src="preview3.png" width="40%">
 
-#### Setup
-
+### Setup
 * Install widget to panel or desktop floating
 * Right click on widget to configure
 * Select sport type
