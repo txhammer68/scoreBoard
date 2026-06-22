@@ -16,6 +16,19 @@
 #### Full View
  <img alt="preview2" src="preview3.png" width="40%">
 
+* Install with
+ ``` bash
+git clone https://github.com/TxHammer68/scoreBoard /tmp/scoreBoard && kpackagetool6 -t Plasma/Applet -i /tmp/scoreBoard/
+```
+* Upgrade with
+``` bash
+git clone https://github.com/TxHammer68/scoreBoard /tmp/scoreBoard && kpackagetool6 -t Plasma/Applet -u /tmp/scoreBoard
+```
+* Remove with
+``` bash
+kpackagetool6 --remove scoreBoard --type Plasma/Applet
+```
+
 #### Setup
   * Install widget to panel or desktop floating
   * Right click on widget to configure
@@ -37,18 +50,5 @@
     * Check settings to download/apply update
     * Logout after update for update to be applied
     * Verify settings/config after login
-
-* Install with
- ``` bash
-git clone https://github.com/TxHammer68/scoreBoard /tmp/scoreBoard && kpackagetool6 -t Plasma/Applet -i /tmp/scoreBoard/
-```
-* Upgrade with
-``` bash
-git clone https://github.com/TxHammer68/scoreBoard /tmp/scoreBoard && kpackagetool6 -t Plasma/Applet -u /tmp/scoreBoard
-```
-* Remove with
-``` bash
-kpackagetool6 --remove scoreBoard --type Plasma/Applet
-```
 
 
