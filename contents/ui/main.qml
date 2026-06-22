@@ -23,7 +23,7 @@ PlasmoidItem {
     property var scoreBoard:[]
     property int key:-1
     property bool activeGames:false
-    property int viewHeight: viewMode ?  124 : scoreBoard.length > 4 ? 132*4:132*scoreBoard.length
+    property int viewHeight: Plasmoid.configurationRequired ? 80 : viewMode ?  124 : scoreBoard.length > 4 ? 132*4:132*scoreBoard.length
     property int viewWidth:420
     property double currentVersion:Plasmoid.metaData.version
     property double updateVersion:0.0

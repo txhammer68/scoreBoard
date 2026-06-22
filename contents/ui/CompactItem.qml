@@ -38,7 +38,7 @@ Item {
             color: Kirigami.Theme.textColor
             font.pointSize: 12
             antialiasing : true
-            opacity:activeGames ? 1:.40
+            opacity:Plasmoid.configurationRequired ? 1 : activeGames ? 1:.40
             leftPadding:6
         }
 }

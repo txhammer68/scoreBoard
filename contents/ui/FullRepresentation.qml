@@ -23,18 +23,6 @@ Item {
         }
     }
 
-   Component.onCompleted:{
-       Layout.preferredWidth=viewWidth
-       Layout.preferredHeight=viewHeight
-   }
-
-   onHeightChanged:{
-       Layout.preferredWidth=viewWidth
-       Layout.preferredHeight=viewHeight
-       width:viewWidth
-       height:viewHeight
-   }
-
     Component {
         id: highlight
         Rectangle {
@@ -67,7 +55,7 @@ Item {
                 text:"Configure ScoreBoard"
                 color:Kirigami.Theme.textColor
                 anchors.centerIn:parent
-                font.pointSize:16
+                font.pointSize:14
             }
             MouseArea {
                 anchors.fill: parent
@@ -245,7 +233,7 @@ Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
             width: fullRepresentation.width
-            height: viewHeight
+            height: fullRepresentation.height
             anchors.top:fullRepresentation.top
             anchors.left:fullRepresentation.left
             anchors.margins:4
