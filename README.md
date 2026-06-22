@@ -32,12 +32,12 @@
     * When system wakes from suspend/sleep mode, widget will refresh after network connection is established
     * You can resize popup to get proper fit
     * Added Update Widget Button in the Config Screen
-        * To handle API changes
-        * Automatically checks for updates on first load and wake from sleep mode
-        * Widget will send a system notification message when update is available
-        * Check settings to download/apply update
-        * Logout after update for update to be applied
-        * Verify settings/config after login
+      * To handle API changes
+      * Automatically checks for updates on first load and wake from sleep mode
+      * Widget will send a system notification message when update is available
+      * Check settings to download/apply update
+      * Logout after update for update to be applied
+      * Verify settings/config after login
 
 * Install with
  ``` bash
