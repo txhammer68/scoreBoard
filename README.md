@@ -15,7 +15,29 @@
  
 #### Full View
  <img alt="preview2" src="preview3.png" width="40%">
- 
+
+#### Setup
+* Install widget to panel or desktop floating
+* Right click on widget to configure
+* Select Sport Type
+* Select View
+
+ #### Notes
+* Add multiple scoreboards for different sport types
+* Panel icon changes for active/inactive games
+* Update interval is dynamic; 2 minutes when any game is active, 30 minutes if no games
+* Left click on any game to view more details on the web
+* Middle click on any game to refresh data
+* Compact view is ideal for desktop floating widget, there is an animation that cycles thru all the games
+* Full view is scrollable with mouse wheel,ideal for panel placement
+* When system wakes from suspend/sleep mode, widget will refresh after network connection is established
+* You can resize popup to get proper fit
+* Added Update Widget Button in the Config Screen
+    * Automatically checks for updates on first load and wake from sleep mode
+    * Widget will send a system notification message when update is available
+    * Check settings to download/apply update
+    * Logout after update for update to be applied
+    * Verify settings/config after login
 
 * Install with
  ``` bash
@@ -29,25 +51,5 @@ git clone https://github.com/TxHammer68/scoreBoard /tmp/scoreBoard && kpackageto
 ``` bash
 kpackagetool6 --remove scoreBoard --type Plasma/Applet
 ```
-* Install widget to panel or desktop floating
-* Right click on widget to configure
-* Select Sport Type
-* Select View
 
-#### Notes
-* Add multiple scoreboards for different sport types
-* Panel icon changes for active/inactive games
-* Update interval is dynamic; 2 minutes when any game is active, 30 minutes if no games
-* left click on any game to view more details on the web
-* middle click on any game to refresh data
-* Compact view is ideal for desktop floating widget, there is an animation that cycles thru all the games
-* Full view is scrollable with mouse wheel,ideal for panel placement
-* When system wakes from suspend/sleep mode, widget will refresh after network connection is established
-* You can resize popup to get proper fit
-* Added Update Widget Button in the Config Screen
-    * Automatically checks for updates on first load and wake from sleep mode
-    * Widget will send a system notification message when update is available
-    * Check settings to download/apply update
-    * Logout after update for update to be applied
-    * Verify settings/config after login
 
