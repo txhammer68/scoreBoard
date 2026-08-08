@@ -7,11 +7,11 @@ import org.kde.plasma.plasmoid
 Item {
     id: fullRepresentation
     Layout.preferredWidth:viewWidth
-    Layout.preferredHeight:viewHeight+10
+    Layout.preferredHeight:viewHeight
     Layout.minimumWidth:viewWidth/2
-    Layout.maximumWidth:viewWidth*1.5
-    Layout.minimumHeight:124
-    Layout.maximumHeight:132*6
+    Layout.maximumWidth:viewWidth*2
+    Layout.minimumHeight:viewHeight/8
+    Layout.maximumHeight:viewHeight*2
 
     width:viewWidth
     height:viewHeight
@@ -66,7 +66,7 @@ Item {
                 onClicked:plasmoid.internalAction("configure").trigger()
             }
         }
-}
+    }
 
     Component {
         id: fullRep
@@ -74,9 +74,10 @@ Item {
         Rectangle {
             id:rect1
             width:fullRepresentation.width*.98
-            height:124
+            height:122
             Layout.fillWidth : true
             Layout.fillHeight : true
+            Layout.margins:10
             antialiasing : true
             color:Kirigami.Theme.backgroundColor
             radius:6
@@ -163,7 +164,7 @@ Item {
                         antialiasing : true
                         horizontalAlignment:Qt.AlignLeft
                         Layout.fillWidth:false
-                        bottomPadding:5
+                        topPadding:6
                         rightPadding:10
                     }
                 }
@@ -204,8 +205,8 @@ Item {
                         font.bold:false
                         antialiasing : true
                         horizontalAlignment:Qt.AlignLeft
-                        bottomPadding:5
                         rightPadding:10
+                        topPadding:6
                         Layout.fillWidth:false
                     }
                 }
@@ -228,36 +229,36 @@ Item {
         }
     }
 
-        ListView {
-            id:scoresList
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            width: fullRepresentation.width
-            height: fullRepresentation.height
-            anchors.top:fullRepresentation.top
-            anchors.left:fullRepresentation.left
-            anchors.margins:4
-            spacing:viewMode ? 4:8
-            clip:true
-            model: Plasmoid.configurationRequired ? 1:scoreBoard.length
-            highlight:highlight
-            highlightMoveDuration:1000
-            highlightMoveVelocity:-1
-            highlightFollowsCurrentItem:scoresList.currentIndex !== -1 ? true:false
-            delegate:Plasmoid.configurationRequired ? configRepresentation:fullRep
+    ListView {
+        id:scoresList
+        Layout.fillWidth: true
+        Layout.fillHeight: true
+        width: fullRepresentation.width
+        height: fullRepresentation.height
+        anchors.top:fullRepresentation.top
+        anchors.left:fullRepresentation.left
+        anchors.margins:2
+        spacing:viewMode ? 2:2
+        clip:true
+        model: Plasmoid.configurationRequired ? 1:scoreBoard.length
+        highlight:highlight
+        highlightMoveDuration:1000
+        highlightMoveVelocity:-1
+        highlightFollowsCurrentItem:scoresList.currentIndex !== -1 ? true:false
+        delegate:Plasmoid.configurationRequired ? configRepresentation:fullRep
 
-            Timer {
-                id:init
-                running:viewMode && !Plasmoid.configurationRequired
-                repeat: true
-                interval:10000
-                onTriggered:{
-                    if (scoresList.currentIndex >= scoreBoard.length-1) {
-                        scoresList.currentIndex=-1
-                        scoresList.incrementCurrentIndex();
-                    }
-                    else scoresList.incrementCurrentIndex();
+        Timer {
+            id:init
+            running:!viewMode && !Plasmoid.configurationRequired
+            repeat: true
+            interval:7000
+            onTriggered:{
+                if (scoresList.currentIndex >= scoreBoard.length-1) {
+                    scoresList.currentIndex=-1
+                    scoresList.incrementCurrentIndex();
                 }
+                else scoresList.incrementCurrentIndex();
             }
+        }
     }
 }

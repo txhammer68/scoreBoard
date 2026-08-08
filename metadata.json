@@ -16,10 +16,9 @@
         "Id": "scoreBoard",
         "License": "GPL-2.0",
         "Name": "ScoreBoard",
-        "Version": "2.55",
+        "Version": "2.6",
         "Website": "https://github.com/txhammer68/scoreBoard"
     },
-    "X-Plasma-NotificationArea": "true",
     "X-KDE-ParentApp": "org.kde.plasmashell",
     "X-Plasma-API-Minimum-Version": "6.0"
 }

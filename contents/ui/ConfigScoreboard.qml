@@ -10,18 +10,25 @@ import org.kde.kirigami as Kirigami
 
 KCM.SimpleKCM {
     id: root
+    height:400
     property alias cfg_gameIdx:sportSel.currentIndex
     property string cfg_gameType
     property string cfg_gameTypeURL
     property alias cfg_favTeam:teamSel.displayText
     property alias cfg_favTeamIdx:teamSel.currentIndex
     property alias cfg_viewMode:chkBoxCompact.checked
+    property alias cfg_panelViewMode:chkBoxIcon.checked
+
     property alias cfg_chkBoxCompact:chkBoxCompact.checked
     property alias cfg_chkBoxFull:chkBoxFull.checked
+    property alias cfg_chkBoxIcon:chkBoxIcon.checked
+    property alias cfg_chkBoxScroll:chkBoxScroll.checked
     property alias cfg_chkBoxUpdate:chkBoxUpdate.checked
 
     property bool cfg_chkBoxCompactDefault:true
     property bool cfg_chkBoxFullDefault:false
+    property bool cfg_chkBoxIconDefault:true
+    property bool cfg_chkBoxScrollDefault:false
     property bool cfg_chkBoxUpdateDefault:true
     property string cfg_favTeamDefault:""
     property int cfg_favTeamIdxDefault:-1
@@ -29,6 +36,7 @@ KCM.SimpleKCM {
     property string cfg_gameTypeDefault:""
     property string cfg_gameTypeURLDefault:""
     property bool cfg_viewModeDefault:true
+    property bool cfg_panelViewModeDefault:true
 
     property string mlbTeams:"./scripts/mlbTeams.json"
     property string nflTeams:"./scripts/nflTeams.json"
@@ -50,6 +58,7 @@ KCM.SimpleKCM {
     Component.onCompleted:{
         chkBoxCompact.checked=cfg_chkBoxCompact
         chkBoxFull.checked=cfg_chkBoxFull
+        chkBoxIcon.checked=cfg_panelViewMode
         chkBoxUpdate.checked=cfg_chkBoxUpdate
         chkBoxNotify.checked=cfg_chkBoxNotify
         if (sportSel.currentIndex !== -1) {
@@ -139,6 +148,7 @@ KCM.SimpleKCM {
             text:"Select Scoreboard View"
             color:Kirigami.Theme.textColor
             font.pointSize:14
+            topPadding:20
         }
         Row {
             spacing:15
@@ -155,10 +165,34 @@ KCM.SimpleKCM {
             }
         }
 
+        Text {
+            text:"Select Panel View"
+            color:Kirigami.Theme.textColor
+            font.pointSize:14
+            topPadding:20
+            visible:chkBoxCompact.checked
+        }
+        Row {
+            spacing:15
+            visible:chkBoxCompact.checked
+            QQC2.RadioButton {
+                id: chkBoxIcon
+                checked: true
+                text: qsTr("Icon View")
+            }
+
+            QQC2.RadioButton {
+                id: chkBoxScroll
+                checked: false
+                text: qsTr("Scrolling Scoreboard View")
+            }
+        }
+
         QQC2.CheckBox{
             id: chkBoxUpdate
             checked: true
             text: qsTr("Check for Updates")
+            topPadding:20
         }
 
         Row {

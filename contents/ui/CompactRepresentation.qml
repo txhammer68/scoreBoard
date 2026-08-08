@@ -3,12 +3,12 @@ import QtQuick.Layouts
 
 Item {
     id: compactRepresentation
-    Layout.preferredWidth:36
-    Layout.preferredHeight:42
+    Layout.preferredWidth:panelViewMode ? 36:panelThickness*10
+    Layout.preferredHeight:panelThickness+10
     Layout.minimumWidth:26
-    Layout.maximumWidth:42
+    Layout.maximumWidth:124
     Layout.minimumHeight:26
-    Layout.maximumHeight:44
+    Layout.maximumHeight:panelThickness+20
 
     CompactItem {
         id: compactItem

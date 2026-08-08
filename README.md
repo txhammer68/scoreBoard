@@ -10,11 +10,14 @@
 #### Panel icon View
  <img alt="preview" src="panelView.png" width="40%">
  
-#### Compact View
- <img alt="preview1" src="preview1.png" width="40%">
+#### Scroll Panel View
+ <img alt="preview2" src="preview2.png" width="40%">
  
+#### Popup View
+ <img alt="preview1" src="preview1.png" width="40%">
+  
 #### Full View
- <img alt="preview2" src="preview3.png" width="40%">
+ <img alt="preview3" src="preview3.png" width="40%">
 
 * Install with
  ``` bash
@@ -31,17 +34,19 @@ kpackagetool6 --remove scoreBoard --type Plasma/Applet
 
 #### Setup
   * Install widget to panel or desktop floating
-  * Right click on widget to configure
   * Select sport type
   * Select favorite team
   * Select view
+    * Compact View
+      * Icon only
+         * Panel icon changes for active/inactive games
+      * Scrolling scoreboard
+    * Full View
+       * Desktop floating widget, there is a 10sec animation that cycles thru all the games
   * Add multiple scoreboards for different sport types
-  * Panel icon changes for active/inactive games
   * Update interval is dynamic; 2 minutes when any game is active, 30 minutes if no games
   * Left click on any game to view more details on the web
   * Middle click on any game to refresh data
-  * Compact view is ideal for desktop floating widget, there is an animation that cycles thru all the games
-  * Full view is scrollable with mouse wheel,ideal for panel placement
   * When system wakes from suspend/sleep mode, widget will refresh after network connection is established
   * You can resize popup to get proper fit
   * Added Update Widget Button in the Config Screen to handle API changes
@@ -50,5 +55,4 @@ kpackagetool6 --remove scoreBoard --type Plasma/Applet
     * Check settings to download/apply update
     * Logout after update for update to be applied
     * Verify settings/config after login
-
-
+    

@@ -7,9 +7,9 @@ import org.kde.plasma.configuration
 import org.kde.kirigami as Kirigami
 import org.kde.notification
 
-// Scoreboard Widget
+// Scoreboard Widget for Plasma 6
 // USA sports MLB,NBA,NFL,MLS,NHL,WNBA,World Cup
-// txhammer 03/2026
+// txhammer 06/2026
 
 PlasmoidItem {
     id: root
@@ -23,7 +23,7 @@ PlasmoidItem {
     property var scoreBoard:[]
     property int key:-1
     property bool activeGames:false
-    property int viewHeight: Plasmoid.configurationRequired ? 80 : viewMode ?  124 : scoreBoard.length > 4 ? 132*4:132*scoreBoard.length
+    property int viewHeight: Plasmoid.configurationRequired ? 120 : viewMode ?  124 : scoreBoard.length > 4 ? 124*4:124*scoreBoard.length
     property int viewWidth:420
     property double currentVersion:Plasmoid.metaData.version
     property double updateVersion:0.0
@@ -37,7 +37,12 @@ PlasmoidItem {
     property string favTeam: plasmoid.configuration.favTeam
     property string gameTypeURL: plasmoid.configuration.gameTypeURL
     property bool viewMode:plasmoid.configuration.viewMode
+    property bool panelViewMode:plasmoid.configuration.panelViewMode
     property bool autoUpdate:plasmoid.configuration.chkBoxUpdate
+
+    readonly property real panelThickness:
+    (Plasmoid.formFactor === PlasmaCore.Types.Vertical)
+    ? parent.width : parent.height
 
 
     Component.onCompleted: {
@@ -106,8 +111,7 @@ PlasmoidItem {
         // Set a timeout (10 seconds) so the widget doesn't hang on a dead connection
         xhr.timeout = 10000;
         xhr.onreadystatechange = function () {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status === 200) {
+            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
                     try {
                         let data = JSON.parse(xhr.responseText)
                         if (url === gameTypeURL) {
@@ -119,28 +123,32 @@ PlasmoidItem {
                         }
                     } catch (e) {
                         console.error("Failed to parse JSON from:", url, e);
+                        xhr.onreadystatechange = null;
                         ///console.log("Raw Response Data:", xhr.responseText);
                     }
                 } else {
                     // Handle API Down or Network Error (404, 500, etc.)
                     console.warn("API Error:", xhr.status, "URL:", url);
+                    xhr.onreadystatechange = null;
                     if (url === gameTypeURL) {
                         // Don't wipe current scores immediately on one failure,
                         // but mark that we have a connection issue if you choose.
                         activeGames = false;
                     }
                 }
-            }
         };
 
         xhr.ontimeout = function () {
             console.error("Request timed out for:", url);
+            xhr.onreadystatechange = null;
         };
 
         xhr.onerror = function () {
             console.error("Network error occurred while fetching:", url);
+            xhr.onreadystatechange = null;
         };
-
+        xhr.setRequestHeader("User-Agent", "Mozilla/5.0 (X11; Linux x86_64)");
+        xhr.setRequestHeader("Accept", "application/json");
         xhr.send();
     }
 
@@ -152,7 +160,7 @@ PlasmoidItem {
     }
 
     function findKey (data) {
-        if (typeof(data) !== undefined) {
+        if (data)  {
             key=-1
             if (data.events.length > 0 ) { // check if any data exists
                 for (let i = 0; i < data.events.length; i++) {
@@ -178,7 +186,7 @@ PlasmoidItem {
        }
 
     function processGameData (data) {
-        if (typeof(data) != undefined) {
+        if (data) {
             let array={}
             let scoresList=[]
             if (key !== -1) { // put fav team first in the list of games if playing
@@ -192,14 +200,16 @@ PlasmoidItem {
                         gameClock:data.events[key].competitions[0].status.displayClock,
                         gameDate:data.events[key].competitions[0].date,
                         gameBoxScoresURL:data.events[key].links[0].href,
+                        homeTeamAbrv:data.events[key].competitions[0].competitors[0].team.abbreviation,
                         homeTeamName:data.events[key].competitions[0].competitors[0].team.displayName,
                         homeTeamLogo:data.events[key].competitions[0].competitors[0].team.logo,
-                        homeTeamScore:data.events[key].competitions[0].competitors[0].score,
+                        homeTeamScore:data.events[key].competitions[0].status.type.state == "pre" ? "--":data.events[key].competitions[0].competitors[0].score,
                         homeTeamRecord:data.events[key].competitions[0].competitors[0].hasOwnProperty('records') ? data.events[key].competitions[0].competitors[0].records[0].summary : "--",
                         homeTeamWinner:data.events[key].competitions[0].competitors[0].winner !=undefined ? data.events[key].competitions[0].competitors[0].winner:false,
+                        awayTeamAbrv:data.events[key].competitions[0].competitors[1].team.abbreviation,
                         awayTeamName:data.events[key].competitions[0].competitors[1].team.displayName,
                         awayTeamLogo:data.events[key].competitions[0].competitors[1].team.logo,
-                        awayTeamScore:data.events[key].competitions[0].competitors[1].score,
+                        awayTeamScore:data.events[key].competitions[0].status.type.state == "pre" ? "--":data.events[key].competitions[0].competitors[1].score,
                         awayTeamRecord:data.events[key].competitions[0].competitors[1].hasOwnProperty('records') ? data.events[key].competitions[0].competitors[1].records[0].summary : "--",
                         awayTeamWinner:data.events[key].competitions[0].competitors[1].winner !=undefined ? data.events[key].competitions[0].competitors[1].winner:false,
                         gameHeadline:data.events[key].competitions[0].hasOwnProperty("headlines") ? data.events[key].competitions[0].headlines[0].shortLinkText : ""}
@@ -219,14 +229,16 @@ PlasmoidItem {
                             gameClock:data.events[i].competitions[0].status.displayClock,
                             gameDate:data.events[i].competitions[0].date,
                             gameBoxScoresURL:data.events[i].links[0].href,
+                            homeTeamAbrv:data.events[i].competitions[0].competitors[0].team.abbreviation,
                             homeTeamName:data.events[i].competitions[0].competitors[0].team.displayName,
                             homeTeamLogo:data.events[i].competitions[0].competitors[0].team.logo,
-                            homeTeamScore:data.events[i].competitions[0].competitors[0].score,
+                            homeTeamScore:data.events[i].competitions[0].status.type.state == "pre" ? "--":data.events[i].competitions[0].competitors[0].score,
                             homeTeamRecord:data.events[i].competitions[0].competitors[0].hasOwnProperty('records') ? data.events[i].competitions[0].competitors[0].records[0].summary : "--",
                             homeTeamWinner:data.events[i].competitions[0].competitors[0].winner !=undefined ? data.events[i].competitions[0].competitors[0].winner:false,
+                            awayTeamAbrv:data.events[i].competitions[0].competitors[1].team.abbreviation,
                             awayTeamName:data.events[i].competitions[0].competitors[1].team.displayName,
                             awayTeamLogo:data.events[i].competitions[0].competitors[1].team.logo,
-                            awayTeamScore:data.events[i].competitions[0].competitors[1].score,
+                            awayTeamScore:data.events[i].competitions[0].status.type.state == "pre" ? "--":data.events[i].competitions[0].competitors[1].score,
                             awayTeamRecord:data.events[i].competitions[0].competitors[1].hasOwnProperty('records') ? data.events[i].competitions[0].competitors[1].records[0].summary : "--",
                             awayTeamWinner:data.events[i].competitions[0].competitors[1].winner !=undefined ? data.events[i].competitions[0].competitors[1].winner:false,
                             gameHeadline:data.events[i].competitions[0].hasOwnProperty("headlines") ? data.events[i].competitions[0].headlines[0].shortLinkText : ""}

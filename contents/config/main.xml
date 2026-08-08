@@ -36,6 +36,18 @@
       <attribute name="chkBoxFull" type="Bool"/>
       <default>false</default>
     </entry>
+    <entry name="panelViewMode" type="Bool">
+      <attribute name="panelViewMode" use="required" type="Bool"/>
+      <default>true</default>
+    </entry>
+    <entry name="chkBoxIcon" type="Bool">
+      <attribute name="chkBoxIcon" use="required" type="Bool"/>
+      <default>true</default>
+    </entry>
+    <entry name="chkBoxScroll" type="Bool">
+      <attribute name="chkBoxScroll" type="Bool"/>
+      <default>false</default>
+    </entry>
     <entry name="chkBoxUpdate" type="Bool">
       <attribute name="chkBoxUpdate" use="required" type="Bool"/>
       <default>true</default>
