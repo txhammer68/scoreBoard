@@ -124,15 +124,18 @@ PlasmoidItem {
                     } catch (e) {
                         console.error("Failed to parse JSON from:", url, e);
                         xhr.onreadystatechange = null;
+                        xhr=null;
                         ///console.log("Raw Response Data:", xhr.responseText);
                     } finally {
                         // CRITICAL FIX: Break the closure reference loop on success
                         xhr.onreadystatechange = null;
+                        xhr=null;
                     }
                 } else {
                     // Handle API Down or Network Error (404, 500, etc.)
                     console.warn("API Error:", xhr.status, "URL:", url);
                     xhr.onreadystatechange = null;
+                    xhr=null;
                     if (url === gameTypeURL) {
                         // Don't wipe current scores immediately on one failure,
                         // but mark that we have a connection issue if you choose.
@@ -145,11 +148,13 @@ PlasmoidItem {
         xhr.ontimeout = function () {
             console.error("Request timed out for:", url);
             xhr.onreadystatechange = null;
+            xhr=null;
         };
 
         xhr.onerror = function () {
             console.error("Network error occurred while fetching:", url);
             xhr.onreadystatechange = null;
+            xhr=null;
         };
         xhr.setRequestHeader("User-Agent", "Mozilla/5.0 (Wayland; Linux x86_64)");
         xhr.setRequestHeader("Accept", "application/json");
