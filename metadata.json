@@ -16,7 +16,7 @@
         "Id": "scoreBoard",
         "License": "GPL-2.0",
         "Name": "ScoreBoard",
-        "Version": "2.6",
+        "Version": "2.62",
         "Website": "https://github.com/txhammer68/scoreBoard"
     },
     "X-KDE-ParentApp": "org.kde.plasmashell",

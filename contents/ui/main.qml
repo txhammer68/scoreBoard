@@ -55,15 +55,13 @@ PlasmoidItem {
         }
     }
 
-    onGameTypeURLChanged: {
-        getData(gameTypeURL)
+    function onConfigChanged() {
+        getData(gameTypeURL);
         gameTimer.restart()
     }
 
-    onFavTeamChanged:{
-        getData(gameTypeURL)
-        gameTimer.restart()
-    }
+    onGameTypeURLChanged: onConfigChanged()
+    onFavTeamChanged: onConfigChanged()
 
     Plasmoid.contextualActions: [
         PlasmaCore.Action {
@@ -128,6 +126,7 @@ PlasmoidItem {
                         xhr.onreadystatechange = null;
                         ///console.log("Raw Response Data:", xhr.responseText);
                     } finally {
+                        // CRITICAL FIX: Break the closure reference loop on success
                         xhr.onreadystatechange = null;
                     }
                 } else {
@@ -165,30 +164,21 @@ PlasmoidItem {
     }
 
     function findKey (data) {
-        if (data)  {
             key=-1
-            if (data.events.length > 0 ) { // check if any data exists
-                for (let i = 0; i < data.events.length; i++) {
-                    if (data.events[i].competitions[0].competitors[0].team.displayName===favTeam)  {
-                        key=i
-                        return null
-                    }
-                    else if (data.events[i].competitions[0].competitors[1].team.displayName===favTeam)  {
-                        key=i
-                        return null
-                    }
+            if (!data || !data.events || data.events.length === 0) {
+                return null;
+            }
+            for (let i = 0; i < data.events.length; i++) {
+                if (data.events[i].competitions[0].competitors[0].team.displayName === favTeam ||
+                    data.events[i].competitions[0].competitors[1].team.displayName === favTeam) {
+                    key = i;
+                    return null;
                 }
-                if (key == -1) { // else no fav team playing
-                    key = 0
-                    return null
-                }
-             }
-          }
-          else {
-              key = -1
-              return null
-          }
-       }
+            }
+       key=0
+       return null
+    }
+
 
     function processGameData (data) {
         let array={}
