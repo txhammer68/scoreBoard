@@ -264,9 +264,7 @@ Item {
                     // Scroll down -> next item
                     scoresList.incrementCurrentIndex();
                 }
-                // Ensure bounds are not overstepped
-                //scrollBar.position = Math.max(0, Math.min(scrollBar.position, 1.0 - scrollBar.size))
-                event.accepted = true
+            event.accepted = true
             }
         }
 
