@@ -13,9 +13,6 @@
 #### Scroll Panel View
  <img alt="preview2" src="preview2.png" width="40%">
  
-#### Popup View
- <img alt="preview1" src="preview1.png" width="40%">
-  
 #### Full View
  <img alt="preview3" src="preview3.png" width="40%">
 
