@@ -111,7 +111,8 @@ PlasmoidItem {
         // Set a timeout (10 seconds) so the widget doesn't hang on a dead connection
         xhr.timeout = 10000;
         xhr.onreadystatechange = function () {
-            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+            if (xhr.readyState === XMLHttpRequest.DONE ) {
+                 if (xhr.status === 200) {
                     try {
                         let data = JSON.parse(xhr.responseText)
                         if (url === gameTypeURL) {
@@ -136,6 +137,7 @@ PlasmoidItem {
                         activeGames = false;
                     }
                 }
+            }
         };
 
         xhr.ontimeout = function () {
