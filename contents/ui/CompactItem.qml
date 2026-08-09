@@ -36,7 +36,7 @@ Item {
         anchors.centerIn: parent
         text:Plasmoid.configurationRequired ? "?":getGameType ()
         color: Kirigami.Theme.textColor
-        font.pointSize: panelThickness * 0.5
+        font.pointSize: panelThickness * 0.35
         antialiasing : true
         opacity:Plasmoid.configurationRequired ? 1 : activeGames ? 1:.40
         leftPadding:6
