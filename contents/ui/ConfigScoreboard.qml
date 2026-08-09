@@ -60,11 +60,13 @@ KCM.SimpleKCM {
         chkBoxFull.checked=cfg_chkBoxFull
         chkBoxIcon.checked=cfg_panelViewMode
         chkBoxUpdate.checked=cfg_chkBoxUpdate
+        //chkBoxNotify.checked=cfg_chkBoxNotify
         if (sportSel.currentIndex !== -1) {
             sportSel.currentIndex=cfg_gameIdx
             getSportData(sportSel.currentIndex)
             teamSel.currentIndex=cfg_favTeamIdx
         }
+        //teamSel.currentIndex=cfg_favTeamIdx
         chkBoxUpdate.checked ? getData(updateURL):""
        }
 

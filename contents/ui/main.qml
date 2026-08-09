@@ -111,13 +111,14 @@ PlasmoidItem {
         // Set a timeout (10 seconds) so the widget doesn't hang on a dead connection
         xhr.timeout = 10000;
         xhr.onreadystatechange = function () {
-            if (xhr.readyState === XMLHttpRequest.DONE ) {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
                  if (xhr.status === 200) {
                     try {
                         let data = JSON.parse(xhr.responseText)
                         if (url === gameTypeURL) {
                             findKey (data)
                             processGameData(data)
+                            console.log("process game data ok");
                             checkActiveGames(data)
                         } else if (url === updateURL) {
                             processUpdateData(data)
@@ -149,7 +150,7 @@ PlasmoidItem {
             console.error("Network error occurred while fetching:", url);
             xhr.onreadystatechange = null;
         };
-        xhr.setRequestHeader("User-Agent", "Mozilla/5.0 (X11; Linux x86_64)");
+        xhr.setRequestHeader("User-Agent", "Mozilla/5.0 (Wayland; Linux x86_64)");
         xhr.setRequestHeader("Accept", "application/json");
         xhr.send();
     }
