@@ -239,8 +239,12 @@ Item {
         anchors.left:fullRepresentation.left
         anchors.margins:2
         spacing:viewMode ? 2:2
-        snapMode: scoresList.SnapToItem
+        snapMode: ListView.SnapOneItem
+        highlightRangeMode: ListView.StrictlyEnforceRange
+        preferredHighlightBegin: 0
+        preferredHighlightEnd: 0
         clip:true
+        interactive: false
         model: Plasmoid.configurationRequired ? 1:scoreBoard.length
         highlight:highlight
         highlightMoveDuration:1000
@@ -248,31 +252,20 @@ Item {
         highlightFollowsCurrentItem:scoresList.currentIndex !== -1 ? true:false
         delegate:Plasmoid.configurationRequired ? configRepresentation:fullRep
 
-        ScrollBar.vertical: ScrollBar {
-            id: scrollBar
-            snapMode: ScrollBar.SnapOnRelease
-            stepSize: scoresList.contentHeight > 0 ? ((scoresList.height*1.097)/scoresList.contentHeight) : 0
-            //.068578
-            //scoresList.height / scoresList.contentHeight*1.11
-            //.068543
-        }
-
         MouseArea {
-            anchors.fill: scoresList
-            // propagate mouse clicks through to interact with the list items
-            propagateComposedEvents: true
+            anchors.fill: parent
+            propagateComposedEvents: false
             acceptedButtons: Qt.NoButton
-
             onWheel: (event) => {
                 if (event.angleDelta.y > 0) {
-                    // Scroll Up by designated pixel height (Lines)
-                    scrollBar.decrease()
-                } else {
-                    // Scroll Down
-                    scrollBar.increase()
+                    // Scroll up -> previous item
+                    scoresList.decrementCurrentIndex();
+                } else if (event.angleDelta.y < 0) {
+                    // Scroll down -> next item
+                    scoresList.incrementCurrentIndex();
                 }
                 // Ensure bounds are not overstepped
-                scrollBar.position = Math.max(0, Math.min(scrollBar.position, 1.0 - scrollBar.size))
+                //scrollBar.position = Math.max(0, Math.min(scrollBar.position, 1.0 - scrollBar.size))
                 event.accepted = true
             }
         }
