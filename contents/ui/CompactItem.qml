@@ -173,6 +173,10 @@ Item {
         height:panelThickness
         spacing:2
         clip:true
+        snapMode: ListView.SnapOneItem
+        highlightRangeMode: ListView.StrictlyEnforceRange
+        preferredHighlightBegin: 0
+        preferredHighlightEnd: 0
         model: scoreBoard.length
         highlight:highlight
         highlightMoveDuration:1000
@@ -184,6 +188,16 @@ Item {
             anchors.fill:parent
             onClicked: (mouse)=> {
                 mouse.button == Qt.LeftButton ?  root.expanded = !root.expanded : getData(gameTypeURL)
+            }
+            onWheel: (event) => {
+                if (event.angleDelta.y > 0) {
+                    // Scroll up -> previous item
+                    scoresList.decrementCurrentIndex();
+                } else if (event.angleDelta.y < 0) {
+                    // Scroll down -> next item
+                    scoresList.incrementCurrentIndex();
+                }
+                event.accepted = true
             }
         }
     }
