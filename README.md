@@ -55,4 +55,5 @@ kpackagetool6 --remove scoreBoard --type Plasma/Applet
     * Check settings to download/apply update
     * Logout after update for update to be applied
     * Verify settings/config after login
+    * NOTE: May need to remove previous updates in /tmp/scoreBoard if update fails
     
