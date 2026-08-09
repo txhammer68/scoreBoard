@@ -73,7 +73,7 @@ Item {
 
         Rectangle {
             id:rect1
-            width:fullRepresentation.width*.98
+            width:fullRepresentation.width*.99
             height:122
             Layout.fillWidth : true
             Layout.fillHeight : true
@@ -135,7 +135,7 @@ Item {
                     Image {
                         id:atl
                         source: scoreBoard[index].awayTeamLogo
-                        width:48
+                        width:36
                         horizontalAlignment:Qt.AlignLeft
                         sourceSize.height:height
                         sourceSize.width:width
@@ -159,8 +159,7 @@ Item {
                         id:ats
                         text:scoreBoard[index].awayTeamScore
                         color:winningTeam(scoreBoard[index].awayTeamWinner,index)
-                        font.pointSize:14
-                        font.bold:false
+                        font.pointSize:16
                         antialiasing : true
                         horizontalAlignment:Qt.AlignLeft
                         Layout.fillWidth:false
@@ -178,7 +177,7 @@ Item {
                     Image{
                         id:htl
                         source: scoreBoard[index].homeTeamLogo
-                        width:48
+                        width:36
                         sourceSize.height:height
                         sourceSize.width:width
                         antialiasing:true
@@ -201,8 +200,7 @@ Item {
                         id:hts
                         text: scoreBoard[index].homeTeamScore
                         color:winningTeam(scoreBoard[index].homeTeamWinner,index)
-                        font.pointSize:14
-                        font.bold:false
+                        font.pointSize:16
                         antialiasing : true
                         horizontalAlignment:Qt.AlignLeft
                         rightPadding:10
