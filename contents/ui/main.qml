@@ -127,6 +127,8 @@ PlasmoidItem {
                         console.error("Failed to parse JSON from:", url, e);
                         xhr.onreadystatechange = null;
                         ///console.log("Raw Response Data:", xhr.responseText);
+                    } finally {
+                        xhr.onreadystatechange = null;
                     }
                 } else {
                     // Handle API Down or Network Error (404, 500, etc.)
@@ -189,9 +191,9 @@ PlasmoidItem {
        }
 
     function processGameData (data) {
+        let array={}
+        let scoresList=[]
         if (data) {
-            let array={}
-            let scoresList=[]
             if (key !== -1) { // put fav team first in the list of games if playing
                 if ( data.events.length > 0 ) { // check if any data exists
                     array={
