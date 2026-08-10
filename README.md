@@ -1,12 +1,10 @@
+# scoreBoard
+* KDE Plasma 6 sKoreboard Widget
+* Get Sports Scores for MLB,MLS,NBA,NFL,NHL,WNBA,World Cup
 <p align="center">
     <img src="https://img.shields.io/badge/KDE_Plasma-6.0+-blue?style=for-the-badge&logo=kde" alt="KDE Plasma 6">
     <img src="https://img.shields.io/badge/license-GPL--2.0-green?style=for-the-badge" alt="License">
 </p>
-
-# scoreBoard
-* KDE Plasma 6 sKoreboard Widget
-* Get Sports Scores for MLB,MLS,NBA,NFL,NHL,WNBA,World Cup
-
 #### Panel icon View
  <img alt="preview" src="panelView.png" width="40%">
  
