@@ -9,6 +9,7 @@
         "BugReportUrl": "https://github.com/txhammer68/scoreBoard/issues",
         "Category": "Online Services",
         "Description": "Plasma Widget for Sports Scores",
+        "ConfigXApplet": true,
         "FormFactors": [
             "desktop"
         ],
@@ -16,7 +17,7 @@
         "Id": "scoreBoard",
         "License": "GPL-2.0",
         "Name": "ScoreBoard",
-        "Version": "2.62",
+        "Version": "2.7",
         "Website": "https://github.com/txhammer68/scoreBoard"
     },
     "X-KDE-ParentApp": "org.kde.plasmashell",
