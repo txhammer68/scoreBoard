@@ -1,71 +1,36 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
-import org.kde.kirigami as Kirigami
 import org.kde.plasma.plasmoid
 
 Item {
     id: fullRepresentation
     Layout.preferredWidth:viewWidth
     Layout.preferredHeight:viewHeight
-    Layout.minimumWidth:viewWidth/2
-    Layout.maximumWidth:viewWidth*2
-    Layout.minimumHeight:viewHeight/8
-    Layout.maximumHeight:viewHeight*8
-
-    width:viewWidth
-    height:viewHeight
 
     Connections { // reset scoreboad views after popup closed
         target: root
         function onExpandedChanged() {
-            scoresList.positionViewAtBeginning()
-        }
-    }
-
-    Component {
-        id: highlight
-        Rectangle {
-            width: scoresList.width; height: scoresList.height
-            color: "transparent";
-            y: scoresList.currentItem.y ? scoresList.currentItem.y:0
-            Behavior on y {
-                // smooth scroll animation
-                NumberAnimation {
-                    id:smoothScroll
-                    duration: 1100
-                    easing.type: Easing.OutQuad
-                }
+            viewLoad.item.positionViewAtBeginning()
             }
         }
-    }
 
-    Component {
-        id: configRepresentation
-
-        Rectangle {
-            visible:Plasmoid.configurationRequired
-            anchors.fill:parent
-            color:"transparent"
-            radius:6
-            antialiasing : true
-            border.color:Kirigami.Theme.disabledTextColor
-
-            Text {
-                text:"Configure ScoreBoard"
-                color:Kirigami.Theme.textColor
-                anchors.centerIn:parent
-                font.pointSize:14
-            }
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                hoverEnabled:true
-                onEntered: parent.border.color=Kirigami.Theme.linkColor
-                onExited:parent.border.color=Kirigami.Theme.textColor
-                onClicked:plasmoid.internalAction("configure").trigger()
+        Button {
+            text: "Configure ScoreBoard"
+            anchors.horizontalCenter:parent.horizontalCenter
+            anchors.verticalCenter:parent.verticalCenter
+            visible: Plasmoid.configurationRequired // Only shows if the config is missing
+            onClicked: {
+                // Triggers the system's native configure action manually
+                plasmoid.internalAction("configure").trigger()
             }
         }
+
+    Loader {
+        id:viewLoad
+        anchors.fill: parent
+        sourceComponent: !inPanel ? desktopRepresentation : panelRepresentation
+        active:!Plasmoid.configurationRequired//true
     }
 
     Component {
@@ -73,25 +38,40 @@ Item {
 
         Rectangle {
             id:rect1
-            width:fullRepresentation.width*.99
-            height:122
+            width:fullRepresentation.width-4
+            height:128
             Layout.fillWidth : true
             Layout.fillHeight : true
-            Layout.margins:10
             antialiasing : true
-            color:Kirigami.Theme.backgroundColor
+            color:backgroundColor
             radius:6
 
             MouseArea {
                 id: mouseArea1a
-                anchors.fill: parent
+                anchors.fill: rect1
                 cursorShape:  Qt.PointingHandCursor
                 hoverEnabled:true
+                propagateComposedEvents: true
                 acceptedButtons: Qt.LeftButton | Qt.MiddleButton
-                onEntered:parent.color=Kirigami.Theme.activeBackgroundColor
-                onExited:parent.color=Kirigami.Theme.backgroundColor
+                onEntered:rect1.color=activeBackgroundColor
+                onExited:rect1.color=backgroundColor
                 onClicked: (mouse)=> {
                     mouse.button == Qt.LeftButton ? Qt.openUrlExternally(scoreBoard[index].gameBoxScoresURL) : getData(gameTypeURL)
+                }
+                onWheel: (event) => {
+                    // Automatically fetch the parent view (either PathView or ListView)
+                    let view = rect1.ListView.view || rect1.PathView.view;
+
+                    if (view) {
+                        if (event.angleDelta.y > 0) {
+                            // Scroll up -> previous item
+                            view.decrementCurrentIndex();
+                        } else if (event.angleDelta.y < 0) {
+                            // Scroll down -> next item
+                            view.incrementCurrentIndex();
+                        }
+                        event.accepted = true;
+                    }
                 }
             }
 
@@ -99,22 +79,23 @@ Item {
                 id:gameTimes
                 anchors.verticalCenter:parent.verticalCenter
                 anchors.left:parent.left
-                anchors.leftMargin:290
+                anchors.leftMargin:260
                 spacing:0
-                topPadding:-4
+                topPadding:1
                 Text {
                     id:gameStatus
                     text:gameState(index).split(',')[0]
-                    color: (scoreBoard[index].gameStatusState == "in") ? "green" : (scoreBoard[index].gameStatusState == "post") ? "red" : Kirigami.Theme.disabledTextColor
-                    font.pointSize:11
+                    color: (scoreBoard[index].gameStatusState == "in") ? "green" : (scoreBoard[index].gameStatusState == "post") ? "red" : disabledTextColor
+                    font.pointSize:smallFontSize
                     antialiasing:true
+                    leftPadding:(scoreBoard[index].gameStatusState == "in") ? 4:0
                     anchors.horizontalCenter:parent.horizontalCenter
                 }
 
                 Text {
                     text:(scoreBoard[index].gameStatusState == "in") ? scoreBoard[index].leagueAbbreviation !== "MLB" ? scoreBoard[index].gameClock : "" : Qt.formatDateTime(new Date(scoreBoard[index].gameDate),"M/dd/yy")
-                    color:(scoreBoard[index].gameStatusState == "in") ? Kirigami.Theme.textColor : Kirigami.Theme.disabledTextColor
-                    font.pointSize:11
+                    color:(scoreBoard[index].gameStatusState == "in") ? textColor : disabledTextColor
+                    font.pointSize:smallFontSize
                     antialiasing:true
                     anchors.horizontalCenter:parent.horizontalCenter
                 }
@@ -123,9 +104,10 @@ Item {
             ColumnLayout {
                 spacing:0
                 width:parent.width-16
-                height:parent.height-12
+                height:parent.height-16
                 anchors.top:parent.top
                 anchors.left:parent.left
+                anchors.leftMargin:10
 
                 RowLayout {
                     spacing:2
@@ -135,19 +117,20 @@ Item {
                     Image {
                         id:atl
                         source: scoreBoard[index].awayTeamLogo
-                        width:36
-                        horizontalAlignment:Qt.AlignLeft
+                        width:iconSizeMed
+                        height:iconSizeMed
                         sourceSize.height:height
                         sourceSize.width:width
-                        antialiasing:true
+                        horizontalAlignment:Qt.AlignLeft
+                        smooth:true
                         fillMode:Image.PreserveAspectFit
                     }
 
                     Text {
                         id:ateam
                         text:scoreBoard[index].awayTeamName
-                        color:Kirigami.Theme.textColor
-                        font.pointSize:14
+                        color:textColor
+                        font.pointSize:defaultFontSize+2
                         antialiasing : true
                         width:80
                         leftPadding:10
@@ -158,13 +141,14 @@ Item {
                     Text {
                         id:ats
                         text:scoreBoard[index].awayTeamScore
-                        color:winningTeam(scoreBoard[index].awayTeamWinner,index)
-                        font.pointSize:16
+                        color:winningTeam (scoreBoard[index].awayTeamWinner,index)
+                        font.bold:scoreBoard[index].awayTeamWinner
+                        font.pointSize:defaultFontSize+3
                         antialiasing : true
                         horizontalAlignment:Qt.AlignLeft
                         Layout.fillWidth:false
                         topPadding:6
-                        rightPadding:10
+                        rightPadding:20
                     }
                 }
 
@@ -177,18 +161,20 @@ Item {
                     Image{
                         id:htl
                         source: scoreBoard[index].homeTeamLogo
-                        width:36
+                        width:iconSizeMed
+                        height:iconSizeMed
                         sourceSize.height:height
                         sourceSize.width:width
-                        antialiasing:true
+                        smooth:true
                         fillMode:Image.PreserveAspectFit
+                        horizontalAlignment:Qt.AlignLeft
                     }
 
                     Text {
                         id:hta
                         text:scoreBoard[index].homeTeamName
-                        color:Kirigami.Theme.textColor
-                        font.pointSize:14
+                        color:textColor
+                        font.pointSize:defaultFontSize+2
                         antialiasing : true
                         width:80
                         leftPadding:10
@@ -199,11 +185,12 @@ Item {
                     Text {
                         id:hts
                         text: scoreBoard[index].homeTeamScore
-                        color:winningTeam(scoreBoard[index].homeTeamWinner,index)
-                        font.pointSize:16
+                        color:winningTeam (scoreBoard[index].homeTeamWinner,index)
+                        font.bold:scoreBoard[index].homeTeamWinner
+                        font.pointSize:defaultFontSize+3
                         antialiasing : true
                         horizontalAlignment:Qt.AlignLeft
-                        rightPadding:10
+                        rightPadding:20
                         topPadding:6
                         Layout.fillWidth:false
                     }
@@ -213,13 +200,13 @@ Item {
                 anchors.bottom:rect1.bottom
                 anchors.left:rect1.left
                 text:scoreBoard[index].gameHeadline
-                color:Kirigami.Theme.textColor
-                font.pointSize:10
+                color:disabledTextColor
+                font.pointSize:smallFontSize
                 antialiasing : true
                 horizontalAlignment:Qt.AlignLeft
                 leftPadding:5
                 topPadding:2
-                width:rect1.width
+                width:rect1.width*.97
                 Layout.fillWidth:true
                 elide: Text.ElideRight
                 wrapMode: Text.NoWrap
@@ -227,57 +214,63 @@ Item {
         }
     }
 
-    ListView {
-        id:scoresList
-        Layout.fillWidth: true
-        Layout.fillHeight: true
-        width: fullRepresentation.width
-        height: fullRepresentation.height
-        anchors.top:fullRepresentation.top
-        anchors.left:fullRepresentation.left
-        anchors.margins:2
-        spacing:viewMode ? 2:2
-        snapMode: ListView.SnapOneItem
-        highlightRangeMode: ListView.StrictlyEnforceRange
-        preferredHighlightBegin: 0
-        preferredHighlightEnd: 0
-        clip:true
-        interactive: false
-        model: Plasmoid.configurationRequired ? 1:scoreBoard.length
-        highlight:highlight
-        highlightMoveDuration:1000
-        highlightMoveVelocity:-1
-        highlightFollowsCurrentItem:scoresList.currentIndex !== -1 ? true:false
-        delegate:Plasmoid.configurationRequired ? configRepresentation:fullRep
 
-        MouseArea {
-            anchors.fill: parent
-            propagateComposedEvents: false
-            acceptedButtons: Qt.NoButton
-            onWheel: (event) => {
-                if (event.angleDelta.y > 0) {
-                    // Scroll up -> previous item
-                    scoresList.decrementCurrentIndex();
-                } else if (event.angleDelta.y < 0) {
-                    // Scroll down -> next item
-                    scoresList.incrementCurrentIndex();
-                }
-            event.accepted = true
+    Component {
+        id: desktopRepresentation
+
+    PathView {
+        id: scoresList
+        anchors.fill:parent
+        model: Plasmoid.configurationRequired ? 0:scoreBoard.length
+        clip: true
+        //anchors.margins:4
+        pathItemCount: inPanel ? scoreBoard.length > 4 ? 4 : scoreBoard.length : 1
+        preferredHighlightBegin: !inPanel ? .5 : 0
+        preferredHighlightEnd: !inPanel ? .5 : 0
+        highlightRangeMode: PathView.StrictlyEnforced
+        highlightMoveDuration: 350
+
+        path: Path {
+            startX: scoresList.width/1.95
+            startY: !inPanel ? -128:0
+            PathLine {
+                x: scoresList.width/1.95
+                y: !inPanel ?  scoresList.height+130:viewHeight
             }
         }
 
+        delegate: Plasmoid.configurationRequired ? undefined:fullRep
+
         Timer {
             id:init
-            running:!viewMode && !Plasmoid.configurationRequired
+            running:!inPanel && !Plasmoid.configurationRequired
             repeat: true
             interval:7000
-            onTriggered:{
-                if (scoresList.currentIndex >= scoreBoard.length-1) {
-                    scoresList.currentIndex=-1
-                    scoresList.incrementCurrentIndex();
-                }
-                else scoresList.incrementCurrentIndex();
+            onTriggered:scoresList.incrementCurrentIndex()
             }
+        }
+    }
+
+    Component {
+        id: panelRepresentation
+
+        ListView {
+            id:scoresList
+            anchors.fill:fullRepresentation
+            anchors.margins:4
+            spacing:4
+            snapMode: ListView.SnapOneItem
+            highlightRangeMode: ListView.StrictlyEnforceRange
+            preferredHighlightBegin: 0
+            preferredHighlightEnd: 0
+            clip:true
+            interactive: false
+            model: Plasmoid.configurationRequired ? 0:scoreBoard.length
+            highlight:highlight
+            highlightMoveDuration:500
+            highlightMoveVelocity:-1
+            highlightFollowsCurrentItem:true
+            delegate:Plasmoid.configurationRequired ? undefined:fullRep
         }
     }
 }

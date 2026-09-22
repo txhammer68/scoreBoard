@@ -3,13 +3,30 @@ import QtQuick.Layouts
 import org.kde.plasma.plasmoid
 import org.kde.plasma.core as PlasmaCore
 import QtNetwork
-import org.kde.plasma.configuration
+//import org.kde.plasma.configuration
 import org.kde.kirigami as Kirigami
 import org.kde.notification
 
-// Scoreboard Widget for Plasma 6
-// USA sports MLB,NBA,NFL,MLS,NHL,WNBA,World Cup
-// txhammer 06/2026
+
+/*
+ * txhammer 09/2026
+ * Scoreboard Widget for Plasma 6
+ * USA sports MLB,NBA,NFL,MLS,NHL,WNBA,World Cup
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 
 PlasmoidItem {
     id: root
@@ -23,8 +40,8 @@ PlasmoidItem {
     property var scoreBoard:[]
     property int key:-1
     property bool activeGames:false
-    property int viewHeight: Plasmoid.configurationRequired ? 120 : viewMode ?  124 : scoreBoard.length > 4 ? 124*4:124*scoreBoard.length
-    property int viewWidth:420
+    property int viewHeight: Plasmoid.configurationRequired ? 64 : inPanel ?  scoreBoard.length > 4 ? 128*4:128*scoreBoard.length : 128
+    property int viewWidth:380
     property double currentVersion:Plasmoid.metaData.version
     property double updateVersion:0.0
     property bool updateAvail:false
@@ -36,20 +53,42 @@ PlasmoidItem {
     property int gameTypeIdx: plasmoid.configuration.gameIdx
     property string favTeam: plasmoid.configuration.favTeam
     property string gameTypeURL: plasmoid.configuration.gameTypeURL
-    property bool viewMode:plasmoid.configuration.viewMode
     property bool panelViewMode:plasmoid.configuration.panelViewMode
     property bool autoUpdate:plasmoid.configuration.chkBoxUpdate
+
+    Plasmoid.configurationRequired: plasmoid.configuration.gameTypeURL.length <= 0
+    readonly property bool inPanel:(Plasmoid.formFactor !== PlasmaCore.Types.Planar)
+    readonly property bool horizontalPanel:(Plasmoid.formFactor === PlasmaCore.Types.Horizontal)
+
+    Kirigami.Theme.inherit: false
+    Kirigami.Theme.colorSet: Kirigami.Theme.Complementary
+    //Kirigami.Theme.colorSet: Kirigami.Theme.View
+    //Kirigami.Theme.colorSet: Kirigami.Theme.Window
+
+    property color backgroundColor:Kirigami.Theme.backgroundColor
+    property color activeBackgroundColor:Kirigami.Theme.activeBackgroundColor
+    property color textColor:Kirigami.Theme.textColor
+    property color disabledTextColor:Kirigami.Theme.disabledTextColor
+
+    property int smallFontSize:Kirigami.Theme.smallFont.pointSize+1
+    property int defaultFontSize:Kirigami.Theme.defaultFont.pointSize
+
+    property int iconSizeMed:Kirigami.Units.iconSizes.medium
+
+    // PlasmaCore.Types.Planar
+    // PlasmaCore.Types.Vertical:
+    // PlasmaCore.Types.Horizontal
 
     readonly property real panelThickness:
     (Plasmoid.formFactor === PlasmaCore.Types.Vertical)
     ? parent.width : parent.height
-
 
     Component.onCompleted: {
         if (gameTypeURL.length > 0) {
             getData(gameTypeURL)
             autoUpdate ? getData(updateURL):""
             gameTimer.start()
+            Plasmoid.configurationRequired = false
         } else {
             Plasmoid.configurationRequired = true
         }
@@ -106,8 +145,8 @@ PlasmoidItem {
     function getData(url) {
         let xhr = new XMLHttpRequest();
         xhr.open("GET", url, true);
-        // Set a timeout (10 seconds) so the widget doesn't hang on a dead connection
-        xhr.timeout = 10000;
+        // Set a timeout (5 seconds) so the widget doesn't hang on a dead connection
+        xhr.timeout = 5000;
         xhr.onreadystatechange = function () {
             if (xhr.readyState === XMLHttpRequest.DONE) {
                  if (xhr.status === 200) {
@@ -205,13 +244,13 @@ PlasmoidItem {
                         homeTeamLogo:data.events[key].competitions[0].competitors[0].team.logo,
                         homeTeamScore:data.events[key].competitions[0].status.type.state == "pre" ? "--":data.events[key].competitions[0].competitors[0].score,
                         homeTeamRecord:data.events[key].competitions[0].competitors[0].hasOwnProperty('records') ? data.events[key].competitions[0].competitors[0].records[0].summary : "--",
-                        homeTeamWinner:data.events[key].competitions[0].competitors[0].winner !=undefined ? data.events[key].competitions[0].competitors[0].winner:false,
+                        homeTeamWinner:data.events[key].competitions[0].competitors[0].winner != undefined ? data.events[key].competitions[0].competitors[0].winner:false,
                         awayTeamAbrv:data.events[key].competitions[0].competitors[1].team.abbreviation,
                         awayTeamName:data.events[key].competitions[0].competitors[1].team.displayName,
                         awayTeamLogo:data.events[key].competitions[0].competitors[1].team.logo,
                         awayTeamScore:data.events[key].competitions[0].status.type.state == "pre" ? "--":data.events[key].competitions[0].competitors[1].score,
                         awayTeamRecord:data.events[key].competitions[0].competitors[1].hasOwnProperty('records') ? data.events[key].competitions[0].competitors[1].records[0].summary : "--",
-                        awayTeamWinner:data.events[key].competitions[0].competitors[1].winner !=undefined ? data.events[key].competitions[0].competitors[1].winner:false,
+                        awayTeamWinner:data.events[key].competitions[0].competitors[1].winner != undefined ? data.events[key].competitions[0].competitors[1].winner:false,
                         gameHeadline:data.events[key].competitions[0].hasOwnProperty("headlines") ? data.events[key].competitions[0].headlines[0].shortLinkText : ""}
                         scoresList.push(array)
                 }
@@ -234,13 +273,13 @@ PlasmoidItem {
                             homeTeamLogo:data.events[i].competitions[0].competitors[0].team.logo,
                             homeTeamScore:data.events[i].competitions[0].status.type.state == "pre" ? "--":data.events[i].competitions[0].competitors[0].score,
                             homeTeamRecord:data.events[i].competitions[0].competitors[0].hasOwnProperty('records') ? data.events[i].competitions[0].competitors[0].records[0].summary : "--",
-                            homeTeamWinner:data.events[i].competitions[0].competitors[0].winner !=undefined ? data.events[i].competitions[0].competitors[0].winner:false,
+                            homeTeamWinner:data.events[i].competitions[0].competitors[0].winner != undefined ? data.events[i].competitions[0].competitors[0].winner:false,
                             awayTeamAbrv:data.events[i].competitions[0].competitors[1].team.abbreviation,
                             awayTeamName:data.events[i].competitions[0].competitors[1].team.displayName,
                             awayTeamLogo:data.events[i].competitions[0].competitors[1].team.logo,
                             awayTeamScore:data.events[i].competitions[0].status.type.state == "pre" ? "--":data.events[i].competitions[0].competitors[1].score,
                             awayTeamRecord:data.events[i].competitions[0].competitors[1].hasOwnProperty('records') ? data.events[i].competitions[0].competitors[1].records[0].summary : "--",
-                            awayTeamWinner:data.events[i].competitions[0].competitors[1].winner !=undefined ? data.events[i].competitions[0].competitors[1].winner:false,
+                            awayTeamWinner:data.events[i].competitions[0].competitors[1].winner != undefined ? data.events[i].competitions[0].competitors[1].winner:false,
                             gameHeadline:data.events[i].competitions[0].hasOwnProperty("headlines") ? data.events[i].competitions[0].headlines[0].shortLinkText : ""}
                             scoresList.push(array)
                     }
@@ -279,10 +318,12 @@ PlasmoidItem {
             return (Qt.formatDateTime(new Date(scoreBoard[index].gameDate),"h:mm ap"))
         }
         else if (scoreBoard[index].gameStatusState == "in") {
-            if (scoreBoard[index].gameStatusDescription != "In Progress") {
+            if (scoreBoard[index].gameStatusDescription === "In Progress") {
                 return (scoreBoard[index].gameStatusDetail)
             }
-            return (scoreBoard[index].gamePeriod+getOrdinal(scoreBoard[index].gamePeriod))
+            else if (scoreBoard[index].gameStatusDescription === "Delayed") {
+                return ("Delayed") }
+        return (scoreBoard[index].gamePeriod+getOrdinal(scoreBoard[index].gamePeriod))
         }
         else {
             return ( scoreBoard[index].gameStatusDetail)
@@ -292,10 +333,9 @@ PlasmoidItem {
     function winningTeam (x,index){
         let c=Kirigami.Theme.textColor
         if (scoreBoard[index].gameStatusState == "post") {
-            x ? c=Kirigami.Theme.textColor:c=Kirigami.Theme.disabledTextColor
+            x ? c="green":c="red"
         }
-        else c=Kirigami.Theme.textColor
-            return c
+        return c
     }
 
     function getOrdinal(n) {            // assigns superfix to inning
@@ -328,10 +368,18 @@ PlasmoidItem {
     }
 
     Connections {
-        target:NetworkInformation
-        onReachabilityChanged: {
-            if (NetworkInformation.reachability == 4) {
-                suspendTimer.start();
+        target: NetworkInformation
+        function onReachabilityChanged() {
+            // Access the property through the NetworkInformation object
+            if (NetworkInformation.reachability === NetworkInformation.Reachability.Online) {
+                console.log("Device is online and connected to the internet!")
+                if (!suspendTimer.running) {
+                    console.log("Starting 20s cooldown...")
+                    suspendTimer.start()
+                }
+            } else if (NetworkInformation.reachability === NetworkInformation.Reachability.Disconnected) {
+                console.log("Device is disconnected from the network.")
+                suspendTimer.stop()
             }
         }
     }

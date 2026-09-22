@@ -1,42 +1,31 @@
 import QtQuick
-import org.kde.kcmutils as KCM
 import QtQuick.Controls as QQC2
 import QtQuick.Layouts
 import org.kde.plasma.plasmoid
-import org.kde.plasma.configuration
-import org.kde.kirigami.platform
 import org.kde.plasma.plasma5support as Plasma5Support
+import org.kde.plasma.core as PlasmaCore
 import org.kde.kirigami as Kirigami
 
-KCM.SimpleKCM {
-    id: root
-    height:400
+Item {
+    id: main
+    anchors.top:parent.top
+    anchors.left:parent.left
+    anchors.margins:20
+    width:parent.width
+    height:parent.height
+
     property alias cfg_gameIdx:sportSel.currentIndex
-    property string cfg_gameType
     property string cfg_gameTypeURL
-    property alias cfg_favTeam:teamSel.displayText
-    property alias cfg_favTeamIdx:teamSel.currentIndex
-    property alias cfg_viewMode:chkBoxCompact.checked
+    property string cfg_favTeam:""
+    property int cfg_favTeamIdx:-1
+    property alias cfg_chkBoxUpdate:chkBoxUpdate.checked
     property alias cfg_panelViewMode:chkBoxIcon.checked
 
-    property alias cfg_chkBoxCompact:chkBoxCompact.checked
-    property alias cfg_chkBoxFull:chkBoxFull.checked
-    property alias cfg_chkBoxIcon:chkBoxIcon.checked
-    property alias cfg_chkBoxScroll:chkBoxScroll.checked
-    property alias cfg_chkBoxUpdate:chkBoxUpdate.checked
-
-    property bool cfg_chkBoxCompactDefault:true
-    property bool cfg_chkBoxFullDefault:false
-    property bool cfg_chkBoxIconDefault:true
-    property bool cfg_chkBoxScrollDefault:false
     property bool cfg_chkBoxUpdateDefault:true
     property string cfg_favTeamDefault:""
     property int cfg_favTeamIdxDefault:-1
     property int cfg_gameIdxDefault:-1
-    property string cfg_gameTypeDefault:""
     property string cfg_gameTypeURLDefault:""
-    property bool cfg_viewModeDefault:true
-    property bool cfg_panelViewModeDefault:true
 
     property string mlbTeams:"./scripts/mlbTeams.json"
     property string nflTeams:"./scripts/nflTeams.json"
@@ -55,51 +44,47 @@ KCM.SimpleKCM {
     property bool updateAvail:false
     property string updateMsg:"Updated Version Ready "+"("+updateVersion+")"
 
+    readonly property bool inPanel:(Plasmoid.formFactor !== PlasmaCore.Types.Planar)
+
+    Kirigami.Theme.inherit: false
+    Kirigami.Theme.colorSet: Kirigami.Theme.Complementary
+
     Component.onCompleted:{
-        chkBoxCompact.checked=cfg_chkBoxCompact
-        chkBoxFull.checked=cfg_chkBoxFull
         chkBoxIcon.checked=cfg_panelViewMode
         chkBoxUpdate.checked=cfg_chkBoxUpdate
-        //chkBoxNotify.checked=cfg_chkBoxNotify
-        if (sportSel.currentIndex !== -1) {
+        if (cfg_gameIdx !== -1) {
             sportSel.currentIndex=cfg_gameIdx
-            getSportData(sportSel.currentIndex)
-            teamSel.currentIndex=cfg_favTeamIdx
+            getSportData(cfg_gameIdx)
         }
-        //teamSel.currentIndex=cfg_favTeamIdx
+        else {
+            sportSel.currentIndex=-1;
+        }
         chkBoxUpdate.checked ? getData(updateURL):""
-       }
+    }
 
-       Row {
-           id:appInfo
-           anchors.top:root.top
-           anchors.right:root.right
-           //anchors.margins:10
-           Text {
-               id:appVer
-               anchors.top:parent.top
-               anchors.right:parent.right
-               //anchors.topMargin:-20
-               //anchors.rightMargin:10
-               text:Plasmoid.metaData.version
-               color:Theme.disabledTextColor
-               font.pointSize:11
-           }
+    Text {
+          id:appVer
+           anchors.top:main.top
+           anchors.right:main.right
+           anchors.rightMargin:40
+           text:Plasmoid.metaData.version
+           color:Kirigami.Theme.disabledTextColor
+           font.pointSize:Kirigami.Theme.defaultFont.pointSize
        }
 
     Column {
         id:settingsInputs
-        anchors.top:root.top
-        anchors.left:root.left
-        leftPadding:20
-        width:root.width*.98
+        anchors.top:main.top
+        anchors.left:main.left
+
+        width:main.width*.98
         spacing:10
 
         Row {
             spacing:10
             Text {
                 text:"Select Sport"
-                color:Theme.textColor
+                color:Kirigami.Theme.textColor
                 topPadding:7
                 width:172
             }
@@ -108,12 +93,11 @@ KCM.SimpleKCM {
                 width:196
                 height:32
                 currentIndex:-1
-                displayText: currentIndex < 0 ? "Select Sport" : model[currentIndex]
-                model: ["MLB","NFL","NBA","NHL","MLS","WNBA","WCUP"]
+                displayText:currentIndex < 0 ? "Select Sport" : currentText
+                model: ["MLB","MLS","NBA","NFL","NHL","WNBA","WCUP"]
                 onCurrentIndexChanged:{
-                    cfg_gameType=model[currentIndex]
-                    getSportData(currentIndex)
-                    //teamSel.currentIndex=-1
+                    if (currentIndex < 0) return;
+                    getSportData(sportSel.currentIndex)
                 }
             }
         }
@@ -122,7 +106,7 @@ KCM.SimpleKCM {
             spacing:10
             Text {
                 text:"Select Team"
-                color:Theme.textColor
+                color:Kirigami.Theme.textColor
                 topPadding:7
                 width:172
                 horizontalAlignment:Text.AlignLeft
@@ -132,36 +116,12 @@ KCM.SimpleKCM {
                 width:192
                 height:32
                 currentIndex:-1
-                //textRole:"text"
-                //valueRole:"value"
-                displayText: currentIndex < 0 ? "Select Team" : teamArray[currentIndex]
+                displayText: currentIndex < 0 ? "Select Team" : currentText
                 model: teamArray
-                onCurrentIndexChanged: {
+                onActivated: {
                     cfg_favTeam=teamArray[currentIndex]
-                    //cfg_favTeamURL=teamInfo.teams[currentIndex].url
-                    //cfg_favTeamID=cfg_teamInfo.teams[currentIndex].id
+                    cfg_favTeamIdx=teamSel.currentIndex
                 }
-            }
-        }
-
-        Text {
-            text:"Select Scoreboard View"
-            color:Kirigami.Theme.textColor
-            font.pointSize:14
-            topPadding:20
-        }
-        Row {
-            spacing:15
-            QQC2.RadioButton {
-                id: chkBoxCompact
-                checked: true
-                text: qsTr("Compact View")
-            }
-
-            QQC2.RadioButton {
-                id: chkBoxFull
-                checked: false
-                text: qsTr("Full View")
             }
         }
 
@@ -170,11 +130,11 @@ KCM.SimpleKCM {
             color:Kirigami.Theme.textColor
             font.pointSize:14
             topPadding:20
-            visible:chkBoxCompact.checked
+            visible:inPanel
         }
         Row {
             spacing:15
-            visible:chkBoxCompact.checked
+            visible:inPanel
             QQC2.RadioButton {
                 id: chkBoxIcon
                 checked: true
@@ -183,7 +143,7 @@ KCM.SimpleKCM {
 
             QQC2.RadioButton {
                 id: chkBoxScroll
-                checked: false
+                checked: !chkBoxIcon.checked
                 text: qsTr("Scrolling Scoreboard View")
             }
         }
@@ -260,9 +220,16 @@ KCM.SimpleKCM {
                     else if (url == updateURL) {
                         processUpdateData(response)
                     }
+                    if (url !== updateURL) {
+                        if (cfg_favTeamIdx >= 0) {
+                            teamSel.currentIndex = cfg_favTeamIdx
+                        } else {
+                            teamSel.currentIndex = -1
+                        }
+                    }
                 }
             }
-        }
+        };
         xhr.send();
     }
 
@@ -271,16 +238,16 @@ KCM.SimpleKCM {
             getData(mlbTeams)
         }
         else if (x == 1) {
-            getData(nflTeams)
+            getData(mlsTeams)
         }
         else if (x == 2) {
             getData(nbaTeams)
         }
         else if (x == 3) {
-            getData(nhlTeams)
+            getData(nflTeams)
         }
         else if (x == 4) {
-            getData(mlsTeams)
+            getData(nhlTeams)
         }
         else if (x == 5) {
             getData(wnbaTeams)
@@ -288,23 +255,25 @@ KCM.SimpleKCM {
         else if (x == 6) {
             getData(fifaTeams)
         }
+        return
     }
 
     function processTeamData(data) {
         let temp=[]
         for (let i=0;i<data.teams.length;i++) {
             temp.push(data.teams[i].name)
-        }
+          }
         teamArray=temp
         cfg_gameTypeURL=data.scoresURL
+        return
     }
-
 
     function processUpdateData (data) {
         updateVersion=data.KPlugin.Version
         if (updateVersion > currentVersion) {
             updateAvail=true
-        }
+          }
+        return
     }
 
     Plasma5Support.DataSource {
@@ -318,10 +287,10 @@ KCM.SimpleKCM {
             let stderr = scripts["stderr"]
             exited(exitCode, exitStatus, stdout, stderr)
             disconnectSource(sourceName) // cmd finished
-        }
+          }
         function exec(cmd) {
             connectSource(cmd)
-        }
+          }
         signal exited(int exitCode, int exitStatus, string stdout, string stderr)
     }
 }
